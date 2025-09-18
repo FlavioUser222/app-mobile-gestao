@@ -33,9 +33,13 @@ app.post('/vendas', async (req, res) => {
             'INSERT INTO vendas (cliente, valor, data) VALUES ($1, $2, $3) RETURNING *',
             [cliente, valor, data]
         )
+          res.status(201).json(result.rows[0]);
+
 
     } catch (err) {
         console.error(err);
+        res.status(500).json('Erro no server');
+
     }
 
 
