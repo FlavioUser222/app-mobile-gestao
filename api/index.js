@@ -26,12 +26,12 @@ testConnection();
 
 
 app.post('/cliente', async (req, res) => {
-    const { nome,  data ,quantidadeVendas} = req.body
+    const { nome,  data ,quantidadeVendas,email,telefone} = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO clientes (nome, data, quantidadeVendas) VALUES ($1, $2, $3) RETURNING *',
-            [nome, data,quantidadeVendas]
+            'INSERT INTO clientes (nome, data, quantidadeVendas,email,telefone) VALUES ($1, $2, $3) RETURNING *',
+            [nome, data,quantidadeVendas,email,telefone]
         )
         res.status(201).json(result.rows[0]);
     } catch (err) {
