@@ -11,10 +11,8 @@ export default function Cliente() {
     let [clientes, setClientes] = useState([])
     let [nome, setNome] = useState('')
     let [data, setData] = useState('')
-    let [quantidadeVendas, setQuantidadeVendas] = useState(0)
     let [email, setEmail] = useState('')
-    let [telefone, setTelefone] = useState(0)
-
+    let [telefone, setTelefone] = useState()
 
 
     useEffect(() => {
@@ -35,7 +33,6 @@ export default function Cliente() {
         const novoCliente = {
             nome,
             data,
-            quantidadeVendas: Number(quantidadeVendas),
             email,
             telefone: Number(telefone),
         };
@@ -47,10 +44,10 @@ export default function Cliente() {
             console.log('✅ Cliente cadastrado com sucesso:', res.data);
 
             setClientes([...clientes, res.data]);
+            alert('Despesa cadastrada com sucesso')
 
             setNome('');
             setData('');
-            setQuantidadeVendas('');
             setEmail('');
             setTelefone('');
             setModal(false);
@@ -81,7 +78,7 @@ export default function Cliente() {
                                 <Text>Nome: {item.nome}</Text>
                             </View>
                             <View>
-                                <Text>Vendas: {item.quantidadevendas}</Text>
+                                <Text>Vendas:</Text>
                             </View>
                         </View>
                     )}
@@ -97,7 +94,6 @@ export default function Cliente() {
                     <View style={styles.viewInput}>
                         <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
                         <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
-                        <TextInput style={styles.input} value={quantidadeVendas} placeholder='Qauntidade de Vendas' onChangeText={(text) => { setQuantidadeVendas(text) }} />
                         <TextInput style={styles.input} value={email} placeholder='Email' onChangeText={(text) => { setEmail(text) }} />
                         <TextInput style={styles.input} value={telefone} placeholder='Telefone' onChangeText={(text) => { setTelefone(text) }} />
                         <TouchableOpacity onPress={() => { handleInputs() }}>
