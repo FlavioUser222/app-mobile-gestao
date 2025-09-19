@@ -34,11 +34,10 @@ export default function Cliente() {
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
             setListaVendas([...listaVendas, res.data])
-            setNome('');
             setData('');
             setQuantidadeVendas('');
-            setEmail('');
-            setTelefone('');
+            setValor(0)
+
             setModal(false);
 
 
