@@ -13,7 +13,7 @@ export default function Cliente() {
     let [data, setData] = useState('')
     let [email, setEmail] = useState('')
     let [telefone, setTelefone] = useState()
-    let [vendasCliente,setVendasClientes] = useState([])
+    let [vendasCliente, setVendasClientes] = useState([])
 
 
     useEffect(() => {
@@ -74,19 +74,25 @@ export default function Cliente() {
                 <Text>Clientes cadastrados</Text>
                 <FlatList
                     data={clientes}
-                    keyExtractor={(item, index) => item._id || index.toString()}
-                    renderItem={({ item }) => (
-                        <View>
+                    keyExtractor={(item, index) => item.id?.toString() || index.toString()}
+                    renderItem={({ item }) => {
+                        // Buscar o total de vendas para esse cliente no array vendasCliente
+                        const vendaInfo = vendasCliente.find(vc => vc.nome === item.nome);
+
+                        return (
                             <View>
-                                <Text>Data: {item.data}</Text>
-                                <Text>Nome: {item.nome}</Text>
+                                <View>
+                                    <Text>Data: {item.data}</Text>
+                                    <Text>Nome: {item.nome}</Text>
+                                </View>
+                                <View>
+                                    <Text>Vendas: {vendaInfo ? vendaInfo.totalvendas : 0}</Text>
+                                </View>
                             </View>
-                            <View>
-                                <Text>Vendas:</Text>
-                            </View>
-                        </View>
-                    )}
+                        );
+                    }}
                 />
+
             </View>
 
             <Modal visible={modal} animationType="slide"
