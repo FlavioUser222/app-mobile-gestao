@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 'react-native';
 import { styles } from '../styles/styles';
 
@@ -12,7 +12,7 @@ export default function Cliente() {
     let [data, setData] = useState()
 
 
-    useState(() => {
+    useEffect(() => {
         async function fetchData() {
             let res = await axios.get('https://app-mobile-gestao.onrender.com/despesas')
 
