@@ -37,7 +37,6 @@ export default function Cliente() {
             setData('');
             setQuantidadeVendas('');
             setValor(0)
-
             setModal(false);
 
 
@@ -81,7 +80,7 @@ export default function Cliente() {
                     </View>
 
                     <View>
-                        <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setQuantidadeVendas(text) }} />
+                        <TextInput style={styles.input} value={quantidadeVendas} placeholder='Nome' onChangeText={(text) => { setQuantidadeVendas(text) }} />
                         <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                         <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
                         <TouchableOpacity onPress={() => { handleInputs() }}>
