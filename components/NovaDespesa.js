@@ -31,7 +31,7 @@ export default function Cliente() {
         }
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/despesa', novaDespesa)
-            setListaDespesa([...despesas, res.data])
+            setListaDespesa([...listaDespesa, res.data])
 
             setNome('');
             setData('');
