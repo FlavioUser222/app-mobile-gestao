@@ -13,14 +13,18 @@ export default function Cliente() {
     let [data, setData] = useState('')
     let [email, setEmail] = useState('')
     let [telefone, setTelefone] = useState()
+    let [vendasCliente,setVendasClientes] = useState([])
 
 
     useEffect(() => {
         async function fetchData() {
             try {
-                let res = await axios.get('https://app-mobile-gestao.onrender.com/clientes')
+                let resClientes = await axios.get('https://app-mobile-gestao.onrender.com/clientes')
+                setClientes(resClientes.data)
 
-                setClientes(res.data)
+                let resVendasCliente = await axios.get('https://app-mobile-gestao.onrender.com/clientes-vendas')
+
+                setVendasClientes(resVendasCliente.data)
             } catch (err) {
                 console.log('Erro ao buscar clientes')
             }
