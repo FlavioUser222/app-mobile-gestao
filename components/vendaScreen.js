@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 'react-native';
 import axios from 'axios';
 import { styles } from '../styles/styles';
@@ -15,7 +15,7 @@ export default function Cliente() {
 
 
 
-    useState(() => {
+    useEffect(() => {
         async function fetchData() {
             let res = await axios.get('https://app-mobile-gestao.onrender.com/vendas')
             setListaVendas(res.data)
@@ -33,7 +33,7 @@ export default function Cliente() {
         }
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
-            setListaVendas([...listaVendas,res.data])
+            setListaVendas([...listaVendas, res.data])
             setNome('');
             setData('');
             setQuantidadeVendas('');
