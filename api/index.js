@@ -26,12 +26,12 @@ testConnection();
 
 
 app.post('/cliente', async (req, res) => {
-    const { nome,  data ,quantidadeVendas,email,telefone} = req.body
+    const { nome, data, email, telefone } = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO clientes (nome, data, quantidadeVendas,email,telefone) VALUES ($1, $2, $3,$4,$5) RETURNING *',
-            [nome, data,quantidadeVendas,email,telefone]
+            'INSERT INTO clientes (nome, data,email,telefone) VALUES ($1, $2, $3, $4) RETURNING *',
+            [nome, data, email, telefone]
         )
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -39,6 +39,33 @@ app.post('/cliente', async (req, res) => {
         res.status(500).json('Erro no server');
     }
 })
+
+app.get('/clientes-vendas', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                c.id,
+                c.nome,
+                c.email,
+                c.telefone,
+                COALESCE(SUM(v.quantidadeVendas), 0) AS totalVendas
+            FROM clientes c
+            LEFT JOIN vendas v ON v.cliente_id = c.id
+            GROUP BY c.id, c.nome, c.email, c.telefone
+            ORDER BY c.nome
+        `);
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json('Erro no server');
+    }
+});
+
+
+
+
+
 
 
 app.get('/clientes', async (req, res) => {
@@ -81,7 +108,6 @@ app.get('/vendas', async (req, res) => {
         res.status(500).json('Erro no server')
     }
 })
-
 
 
 app.post('/despesa', async (req, res) => {
