@@ -30,7 +30,7 @@ app.post('/cliente', async (req, res) => {
 
     try {
         const result = await pool.query(
-            'INSERT INTO clientes (nome, data, quantidadeVendas,email,telefone) VALUES ($1, $2, $3) RETURNING *',
+            'INSERT INTO clientes (nome, data, quantidadeVendas,email,telefone) VALUES ($1, $2, $3,$4,$5) RETURNING *',
             [nome, data,quantidadeVendas,email,telefone]
         )
         res.status(201).json(result.rows[0]);
