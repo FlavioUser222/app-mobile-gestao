@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 'react-native';
+import { styles } from '../styles/styles';
 
 export default function Cliente() {
 
@@ -22,7 +23,6 @@ export default function Cliente() {
     }, [])
 
 
-
     async function handleInputs() {
         const novaDespesa = {
             nome,
@@ -31,16 +31,20 @@ export default function Cliente() {
         }
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/despesa', novaDespesa)
+            setListaDespesa([...despesas, res.data])
+
+            setNome('');
+            setData('');
+            setQuantidadeVendas('');
+            setEmail('');
+            setTelefone('');
+            setModal(false);
         } catch (err) {
 
             alert('Erro ao cadastrar despesa')
         }
 
     }
-
-
-
-
 
 
     return (
@@ -53,13 +57,17 @@ export default function Cliente() {
 
             <View>
                 <Text>Despesas pendentes</Text>
-                <View>
-                    <Text>Data</Text>
-                    <Text>Nome despesa</Text>
-                </View>
-                <View>
-                    <Text>valor despesa</Text>
-                </View>
+                <FlatList data={listaDespesa} renderItem={({ item }) => (<View>
+                    <View>
+                        <Text>{item.data}</Text>
+                        <Text>{item.nome}</Text>
+                    </View>
+                    <View>
+                        <Text>{item.valor}</Text>
+                    </View>
+
+                </View>)} />
+
             </View>
 
             <Modal visible={modal} animationType="slide"
