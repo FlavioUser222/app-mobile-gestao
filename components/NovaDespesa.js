@@ -35,9 +35,7 @@ export default function Cliente() {
 
             setNome('');
             setData('');
-            setQuantidadeVendas('');
-            setEmail('');
-            setTelefone('');
+
             setModal(false);
         } catch (err) {
 
