@@ -73,9 +73,7 @@ app.post('/venda', async (req, res) => {
 app.get('/vendas', async (req, res) => {
     try {
         const result = await pool.query(
-            `SELECT v.*, c.nome AS cliente_nome 
-             FROM vendas v 
-             JOIN clientes c ON v.cliente_id = c.id`
+            `SELECT * FROM vendas`
         )
         res.status(200).json(result.rows)
     } catch (err) {
@@ -122,4 +120,5 @@ app.get('/despesas', async (req, res) => {
 app.listen(port, () => {
     console.log('App rodando na porta 3000')
 })
+
 
