@@ -63,7 +63,7 @@ export default function Cliente() {
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <View>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar novo cliente</Text>

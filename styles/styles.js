@@ -29,6 +29,20 @@ export const styles = StyleSheet.create({
         justifyContent:'center',
         gap:10,
     },
+    viewDespesas:{
+        flex:0.9,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        paddingVertical:20,
+        gap:40,
+        backgroundColor:'#928e8eff',
+        paddingHorizontal:22,
+    },
+    viewBetweenData:{
+        flex:1,
+        gap:30,
+    },
 
 
 

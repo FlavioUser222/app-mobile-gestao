@@ -46,7 +46,7 @@ export default function Cliente() {
 
 
     return (
-        <View>
+        <View style={styles.container}>
             <View>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar nova despesa</Text>
@@ -55,16 +55,17 @@ export default function Cliente() {
 
             <View>
                 <Text>Despesas pendentes</Text>
-                <FlatList data={listaDespesa} renderItem={({ item }) => (<View>
-                    <View>
-                        <Text>{item.data}</Text>
-                        <Text>{item.nome}</Text>
-                    </View>
-                    <View>
-                        <Text>{item.valor}</Text>
-                    </View>
+                <FlatList data={listaDespesa} renderItem={({ item }) => (
+                    <View style={styles.viewDespesas}>
+                        <View style={styles.viewBetweenData}>
+                            <Text>{item.data}</Text>
+                            <Text>{item.nome}</Text>
+                        </View>
+                        <View>
+                            <Text>{item.valor}</Text>
+                        </View>
 
-                </View>)} />
+                    </View>)} />
 
             </View>
 

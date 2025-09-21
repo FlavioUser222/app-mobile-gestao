@@ -63,11 +63,6 @@ app.get('/clientes-vendas', async (req, res) => {
 });
 
 
-
-
-
-
-
 app.get('/clientes', async (req, res) => {
     try {
         const result = await pool.query(
