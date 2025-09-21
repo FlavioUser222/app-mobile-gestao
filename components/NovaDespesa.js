@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 'react-native';
+import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList,Alert } from 'react-native';
 import { styles } from '../styles/styles';
 
 export default function Cliente() {
@@ -44,6 +44,16 @@ export default function Cliente() {
 
     }
 
+    async function deletarDespesa(id) {
+        try {
+            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/despesa/${id}`)
+            setListaDespesa(listaDespesa.filter(item=>item._id !== id))
+            alert('Despesa deletada com sucesso!')
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -56,16 +66,18 @@ export default function Cliente() {
             <View>
                 <Text>Despesas pendentes</Text>
                 <FlatList data={listaDespesa} renderItem={({ item }) => (
-                    <View style={styles.viewDespesas}>
-                        <View style={styles.viewBetweenData}>
-                            <Text>{item.data}</Text>
-                            <Text>{item.nome}</Text>
-                        </View>
-                        <View>
-                            <Text>{item.valor}</Text>
-                        </View>
+                    <TouchableOpacity onLongPress={()=>{deletarDespesa(item.id)}}  style={styles.viewDespesas}>
+                        <View style={styles.viewDespesas}>
+                            <View style={styles.viewBetweenData}>
+                                <Text>{item.data}</Text>
+                                <Text>{item.nome}</Text>
+                            </View>
+                            <View>
+                                <Text>{item.valor}</Text>
+                            </View>
 
-                    </View>)} />
+                        </View>
+                    </TouchableOpacity>)} />
 
             </View>
 

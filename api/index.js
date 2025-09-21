@@ -134,9 +134,59 @@ app.get('/despesas', async (req, res) => {
 })
 
 
+app.delete('/venda/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await pool.query(
+            'DELETE FROM vendas WHERE id = $1 RETURNING *',
+            [id]
+        )
+        if (result.rowCount === 0) {
+            return res.status(404).json({ mensagem: 'Venda não encontrada' });
+        }
 
+        res.status(200).json({ mensagem: 'Venda deletada com sucesso', venda: result.rows[0] });
 
+    } catch (error) {
+        res.status(500).json({message:"Erro ao deletar venda"})
+    }
+})
 
+app.delete('/despesa/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await pool.query(
+            'DELETE FROM despesas WHERE id = $1 RETURNING *',
+            [id]
+        )
+        if (result.rowCount === 0) {
+            return res.status(404).json({ mensagem: 'Despesa não encontrada' });
+        }
+
+        res.status(200).json({ mensagem: 'Despesa deletada com sucesso', venda: result.rows[0] });
+
+    } catch (error) {
+        res.status(500).json({message:"Erro ao deletar despesa"})
+    }
+})
+
+app.delete('/cliente/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await pool.query(
+            'DELETE FROM cliente WHERE id = $1 RETURNING *',
+            [id]
+        )
+        if (result.rowCount === 0) {
+            return res.status(404).json({ mensagem: 'Cliente não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Cliente deletado com sucesso', venda: result.rows[0] });
+
+    } catch (error) {
+        res.status(500).json({message:"Erro ao deletar cliente"})
+    }
+})
 
 app.listen(port, () => {
     console.log('App rodando na porta 3000')
