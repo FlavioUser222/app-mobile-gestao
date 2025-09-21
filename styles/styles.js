@@ -44,7 +44,14 @@ export const styles = StyleSheet.create({
         flex:1,
         gap:30,
     },
-
+    topoDatela:{
+        flex:1,
+        marginTop:50,
+        gap:20
+    },
+    viewCadastro:{
+        marginTop:50
+    }
 
 
 

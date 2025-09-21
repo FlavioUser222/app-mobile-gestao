@@ -57,13 +57,13 @@ export default function Cliente() {
 
     return (
         <View style={styles.container}>
-            <View>
+            <View style={styles.viewCadastro}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar nova despesa</Text>
                 </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={styles.topoDatela}>
                 <Text>Despesas pendentes</Text>
                 <FlatList data={listaDespesa} renderItem={({ item }) => (
                     <TouchableOpacity onLongPress={()=>{deletarDespesa(item.id)}}  style={styles.viewDespesas}>
