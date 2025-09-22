@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList, Alert } from 'react-native';
 import { styles } from '../styles/styles';
+import { Feather } from '@expo/vector-icons';
 
 export default function Cliente() {
 
@@ -86,13 +87,13 @@ export default function Cliente() {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
                         <View>
-                            <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={() => { setModal(false) }} style={styles.modalClose}><Text><Feather name='x' size={30} color={'Black'}/></Text></TouchableOpacity>
                         </View>
-                        <View style={styles.modalInput}>
+                        <View style={styles.viewInput}>
                             <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
                             <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                             <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
-                            <TouchableOpacity onPress={() => { handleInputs() }}>
+                            <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                 <Text>Cadastrar</Text>
                             </TouchableOpacity>
                         </View>
