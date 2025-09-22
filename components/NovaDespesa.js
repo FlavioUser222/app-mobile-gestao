@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList,Alert } from 'react-native';
+import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList, Alert } from 'react-native';
 import { styles } from '../styles/styles';
 
 export default function Cliente() {
@@ -47,7 +47,7 @@ export default function Cliente() {
     async function deletarDespesa(id) {
         try {
             let res = await axios.delete(`https://app-mobile-gestao.onrender.com/despesa/${id}`)
-            setListaDespesa(listaDespesa.filter(item=>item._id !== id))
+            setListaDespesa(listaDespesa.filter(item => item._id !== id))
             alert('Despesa deletada com sucesso!')
         } catch (error) {
             res.status(500)
@@ -57,7 +57,7 @@ export default function Cliente() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.viewCadastro}>
+            <View style={styles.viewCadastro2}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar nova despesa</Text>
                 </TouchableOpacity>
@@ -66,14 +66,14 @@ export default function Cliente() {
             <View style={styles.topoDatela}>
                 <Text>Despesas pendentes</Text>
                 <FlatList data={listaDespesa} renderItem={({ item }) => (
-                    <TouchableOpacity onLongPress={()=>{deletarDespesa(item.id)}}  style={styles.viewDespesas}>
-                        <View style={styles.viewDespesas}>
+                    <TouchableOpacity onLongPress={() => { deletarDespesa(item.id) }} style={styles.viewDespesas}>
+                        <View style={styles.despesasCard}>
                             <View style={styles.viewBetweenData}>
                                 <Text>{item.data}</Text>
                                 <Text>{item.nome}</Text>
                             </View>
-                            <View>
-                                <Text>{item.valor}</Text>
+                            <View style={styles.valorText}>
+                                <Text>Valor:{item.valor}</Text>
                             </View>
 
                         </View>
@@ -83,17 +83,19 @@ export default function Cliente() {
 
             <Modal visible={modal} animationType="slide"
                 transparent={true}>
-                <View>
-                    <View>
-                        <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
-                    </View>
-                    <View>
-                        <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
-                        <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
-                        <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
-                        <TouchableOpacity onPress={() => { handleInputs() }}>
-                            <Text>Cadastrar</Text>
-                        </TouchableOpacity>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <View>
+                            <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
+                        </View>
+                        <View style={styles.modalInput}>
+                            <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
+                            <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
+                            <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                            <TouchableOpacity onPress={() => { handleInputs() }}>
+                                <Text>Cadastrar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
