@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 'react-native';
 import axios from 'axios';
 import { styles } from '../styles/styles';
-
+import { Picker } from '@react-native-picker/picker'
 
 export default function Cliente() {
 
@@ -12,13 +12,18 @@ export default function Cliente() {
     let [quantidadeVendas, setQuantidadeVendas] = useState()
     let [data, setData] = useState()
     let [valor, setValor] = useState()
+    const [clienteIdSelecionado, setClienteIdSelecionado] = useState(null);
+    const [listaClientes, setListaClientes] = useState([])
 
 
 
     useEffect(() => {
         async function fetchData() {
-            let res = await axios.get('https://app-mobile-gestao.onrender.com/vendas')
-            setListaVendas(res.data)
+            let vendasRes = await axios.get('https://app-mobile-gestao.onrender.com/vendas')
+            setListaVendas(vendasRes.data)
+
+            let clientesRes = await axios.get('https://app-mobile-gestao.onrender.com/clientes')
+            setListaClientes(clientesRes.data)
         }
 
         fetchData()
@@ -27,6 +32,7 @@ export default function Cliente() {
 
     async function handleInputs() {
         const novaVenda = {
+            cliente_id: clienteIdSelecionado,
             quantidadeVendas,
             data,
             valor
@@ -49,7 +55,7 @@ export default function Cliente() {
 
 
     return (
-        <View style={styles.container}>
+        <View>
             <View>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar nova venda</Text>
@@ -65,7 +71,7 @@ export default function Cliente() {
                     </View>
                     <View>
                         <Text>{item.quantidadeVendas}</Text>
-                        <Text>{item.cliente}</Text>
+                        <Text>{item.cliente_id}</Text>
                         <Text>{item.valor}</Text>
                     </View>
 
@@ -78,9 +84,21 @@ export default function Cliente() {
                     <View>
                         <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>    //icone
                     </View>
-
+                    
                     <View>
-                        <TextInput style={styles.input} value={quantidadeVendas} placeholder='Nome' onChangeText={(text) => { setQuantidadeVendas(text) }} />
+                        <Picker
+                            selectedValue={clienteIdSelecionado}
+                            onValueChange={(itemValue) => setClienteIdSelecionado(itemValue)}
+                            style={{ height: 50 }}
+                        >
+                            <Picker.Item label="Selecione um cliente" value={null} />
+                            {listaClientes.map(cliente => (
+                                <Picker.Item key={cliente.id} label={cliente.nome} value={cliente.id} />
+                            ))}
+                        </Picker>
+
+
+                        <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
                         <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                         <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
                         <TouchableOpacity onPress={() => { handleInputs() }}>
