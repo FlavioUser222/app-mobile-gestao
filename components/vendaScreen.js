@@ -31,6 +31,15 @@ export default function Cliente() {
     }, [])
 
 
+    function formatarDataSemHora(dataHora) {
+        if (!dataHora) return '';
+        const data = dataHora.split('T')[0].split(' ')[0]; 
+
+        const partes = data.split('-');
+        if (partes.length !== 3) return dataHora
+
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
 
 
 
@@ -88,7 +97,7 @@ export default function Cliente() {
                     <TouchableOpacity style={styles.viewVendas} onLongPress={() => { deletarVenda(item.id) }}>
                         <View style={styles.vendasCard}>
                             <View style={styles.vendasData}>
-                                <Text>{item.data}</Text>
+                                <Text>{formatarDataSemHora(item.data)}</Text>
                                 <Image />
                             </View>
                             <View style={styles.opcoes}>
