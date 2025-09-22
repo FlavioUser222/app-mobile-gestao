@@ -25,7 +25,8 @@ export const styles = StyleSheet.create({
     input: {
         paddingHorizontal:20,
         paddingVertical:20,
-        backgroundColor: '#a19f9fff'
+        width:'100%',
+        backgroundColor: '#d3d3d3ff'
     },
     viewInput: {
         flex: 1,
@@ -121,7 +122,7 @@ export const styles = StyleSheet.create({
     },
 
     modalContent: {
-        width: '90%',
+        width: '100%',
         padding: 40,
         backgroundColor: '#fff',
         borderRadius: 10,
@@ -130,8 +131,7 @@ export const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
-        alignItems: 'center',
-        gap: 15,
+        marginTop:20,
     },
     opcoesCadasto: {
         marginTop: 10,
@@ -190,6 +190,18 @@ export const styles = StyleSheet.create({
         flex:1,
         alignItems:'center',
         marginTop:15,
+    },
+    modalClose:{
+        alignItems:'flex-end',
+        marginBottom:20,
+    },
+    buttonCadastrar:{
+        width:100,
+        height:50,
+        backgroundColor:'#3b6cf1ff',
+        alignItems:'center',
+        justifyContent:'center'
+    
     }
 
 
