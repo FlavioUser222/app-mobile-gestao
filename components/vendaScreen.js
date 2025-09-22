@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 
 import axios from 'axios';
 import { styles } from '../styles/styles';
 import { Picker } from '@react-native-picker/picker'
+import { Feather } from 'react-native-vector-icons'
 
 export default function Cliente() {
 
@@ -104,7 +105,7 @@ export default function Cliente() {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
                         <View>
-                            <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
+                            <TouchableOpacity onPress={() => { setModal(false) }} style={styles.modalClose}><Text><Feather name='x' size={30} color={'Black'} /></Text></TouchableOpacity>
                         </View>
 
                         <View>
@@ -119,13 +120,14 @@ export default function Cliente() {
                                 ))}
                             </Picker>
 
-
-                            <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
-                            <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
-                            <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
-                            <TouchableOpacity onPress={() => { handleInputs() }}>
-                                <Text>Cadastrar</Text>
-                            </TouchableOpacity>
+                            <View style={styles.viewInput}>
+                                <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
+                                <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
+                                <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                                <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
+                                    <Text>Cadastrar</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
