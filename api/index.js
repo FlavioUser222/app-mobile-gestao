@@ -148,7 +148,7 @@ app.delete('/venda/:id', async (req, res) => {
         res.status(200).json({ mensagem: 'Venda deletada com sucesso', venda: result.rows[0] });
 
     } catch (error) {
-        res.status(500).json({message:"Erro ao deletar venda"})
+        res.status(500).json({ message: "Erro ao deletar venda" })
     }
 })
 
@@ -166,7 +166,7 @@ app.delete('/despesa/:id', async (req, res) => {
         res.status(200).json({ mensagem: 'Despesa deletada com sucesso', venda: result.rows[0] });
 
     } catch (error) {
-        res.status(500).json({message:"Erro ao deletar despesa"})
+        res.status(500).json({ message: "Erro ao deletar despesa" })
     }
 })
 
@@ -184,12 +184,65 @@ app.delete('/cliente/:id', async (req, res) => {
         res.status(200).json({ mensagem: 'Cliente deletado com sucesso', venda: result.rows[0] });
 
     } catch (error) {
-        res.status(500).json({message:"Erro ao deletar cliente"})
+        res.status(500).json({ message: "Erro ao deletar cliente" })
     }
 })
+
+app.get('/faturamentoTotal', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                COALESCE(SUM(valor), 0) AS faturamento_total
+            FROM vendas 
+        `);
+
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json('Erro no server');
+    }
+})
+
+app.get('/despesas-totais', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                COALESCE(SUM(valor), 0) AS despesas_totais
+            FROM despesas
+        `);
+
+        res.status(200).json({ despesas: result.rows[0].despesas_totais });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ erro: 'Erro no servidor ao calcular despesas.' });
+    }
+})
+
+
+app.get('/lucro', async (req, res) => {
+
+    try {
+        const result = await pool.query(`
+            SELECT 
+                COALESCE((SELECT SUM(valor) FROM vendas), 0) -
+                COALESCE((SELECT SUM(valor) FROM despesas), 0) AS lucro
+        `);
+
+        res.status(200).json({ lucro: result.rows[0].lucro });
+
+    } catch (error) {
+        console.error(err);
+        res.status(500).json({ erro: 'Erro no servidor ao calcular lucro.' });
+    }
+
+})
+
+
+
+
+
 
 app.listen(port, () => {
     console.log('App rodando na porta 3000')
 })
-
 
