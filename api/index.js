@@ -196,7 +196,7 @@ app.get('/faturamentoTotal', async (req, res) => {
             FROM vendas 
         `);
 
-        res.status(200).json(result.rows.faturamento_total);
+               res.status(200).json({ faturamento: result.rows[0].faturamento_total });
     } catch (err) {
         console.error(err);
         res.status(500).json('Erro no server');
