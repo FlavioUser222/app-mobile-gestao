@@ -30,6 +30,9 @@ export default function Cliente() {
     }, [])
 
 
+
+
+
     async function handleInputs() {
         const novaVenda = {
             cliente_id: clienteIdSelecionado,
@@ -53,57 +56,77 @@ export default function Cliente() {
 
     }
 
+    async function deletarVenda(id) {
+        try {
+            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}`)
+            setListaVendas(listaVendas.filter(item => item._id !== id))
+            alert('Venda deletada com sucesso!')
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
+    function buscarNomeClientePorId(id) {
+        const cliente = listaClientes.find(cliente => cliente.id === id);
+        return cliente ? cliente.nome : 'Cliente não encontrado';
+    }
+
+
 
     return (
-        <View>
-            <View>
+        <View style={styles.containerVendas}>
+            <View style={styles.viewCadastro2}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar nova venda</Text>
                 </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={styles.topoDatela}>
                 <Text>Vendas realizadas</Text>
-                <FlatList data={listaVendas} renderItem={({ item }) => (<View>
-                    <View>
-                        <Text>{item.data}</Text>
-                        <Image />
-                    </View>
-                    <View>
-                        <Text>{item.quantidadeVendas}</Text>
-                        <Text>{item.cliente_id}</Text>
-                        <Text>{item.valor}</Text>
-                    </View>
+                <FlatList data={listaVendas} renderItem={({ item }) => (
+                    <TouchableOpacity style={styles.viewVendas} onLongPress={() => { deletarVenda(item.id) }}>
+                        <View style={styles.vendasCard}>
+                            <View style={styles.vendasData}>
+                                <Text>{item.data}</Text>
+                                <Image />
+                            </View>
+                            <View style={styles.opcoes}>
+                                <Text>Vendas:{item.quantidadevendas}</Text>
+                                <Text>Cliente:{buscarNomeClientePorId(item.cliente_id)}</Text>
+                                <Text>Valor:{item.valor}</Text>
+                            </View>
 
-                </View>)} />
+                        </View></TouchableOpacity>)} />
 
             </View>
             <Modal visible={modal} animationType="slide"
                 transparent={true}>
-                <View>
-                    <View>
-                        <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>    //icone
-                    </View>
-                    
-                    <View>
-                        <Picker
-                            selectedValue={clienteIdSelecionado}
-                            onValueChange={(itemValue) => setClienteIdSelecionado(itemValue)}
-                            style={{ height: 50 }}
-                        >
-                            <Picker.Item label="Selecione um cliente" value={null} />
-                            {listaClientes.map(cliente => (
-                                <Picker.Item key={cliente.id} label={cliente.nome} value={cliente.id} />
-                            ))}
-                        </Picker>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <View>
+                            <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
+                        </View>
+
+                        <View>
+                            <Picker
+                                selectedValue={clienteIdSelecionado}
+                                onValueChange={(itemValue) => setClienteIdSelecionado(itemValue)}
+                                style={{ height: 50 }}
+                            >
+                                <Picker.Item label="Selecione um cliente" value={null} />
+                                {listaClientes.map(cliente => (
+                                    <Picker.Item key={cliente.id} label={cliente.nome} value={cliente.id} />
+                                ))}
+                            </Picker>
 
 
-                        <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
-                        <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
-                        <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
-                        <TouchableOpacity onPress={() => { handleInputs() }}>
-                            <Text>Cadastrar</Text>
-                        </TouchableOpacity>
+                            <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
+                            <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
+                            <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                            <TouchableOpacity onPress={() => { handleInputs() }}>
+                                <Text>Cadastrar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
