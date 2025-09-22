@@ -62,33 +62,48 @@ export default function Cliente() {
     }
 
 
+    async function deletarCliente(id) {
+        try {
+            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}`)
+            setClientes(clientes.filter(item => item._id !== id))
+            alert('Cliente deletado com sucesso!')
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
+
+
+
     return (
         <View style={styles.container}>
-            <View>
+            <View style={styles.viewCadastro2}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
                     <Text>Cadastrar novo cliente</Text>
                 </TouchableOpacity>
             </View>
 
-            <View>
+            <View style={styles.topoDatela}>
                 <Text>Clientes cadastrados</Text>
                 <FlatList
                     data={clientes}
                     keyExtractor={(item, index) => item.id?.toString() || index.toString()}
                     renderItem={({ item }) => {
-                        // Buscar o total de vendas para esse cliente no array vendasCliente
+
                         const vendaInfo = vendasCliente.find(vc => vc.nome === item.nome);
 
                         return (
-                            <View>
-                                <View>
-                                    <Text>Data: {item.data}</Text>
-                                    <Text>Nome: {item.nome}</Text>
+                            <TouchableOpacity onLongPress={() => { deletarCliente(item.id) }} style={styles.viewClientes}>
+                                <View style={styles.clientesCard}>
+                                    <View style={styles.clienteData}>
+                                        <Text>{item.data}</Text>
+                                        <Text>Nome: {item.nome}</Text>
+                                    </View>
+                                    <View style={styles.clienteVendas}>
+                                        <Text>Vendas: {vendaInfo ? vendaInfo.totalvendas : 0}</Text>
+                                    </View>
                                 </View>
-                                <View>
-                                    <Text>Vendas: {vendaInfo ? vendaInfo.totalvendas : 0}</Text>
-                                </View>
-                            </View>
+                            </TouchableOpacity>
                         );
                     }}
                 />
@@ -97,18 +112,20 @@ export default function Cliente() {
 
             <Modal visible={modal} animationType="slide"
                 transparent={true}>
-                <View style={styles.modal}>
-                    <View>
-                        <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
-                    </View>
-                    <View style={styles.viewInput}>
-                        <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
-                        <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
-                        <TextInput style={styles.input} value={email} placeholder='Email' onChangeText={(text) => { setEmail(text) }} />
-                        <TextInput style={styles.input} value={telefone} placeholder='Telefone' onChangeText={(text) => { setTelefone(text) }} />
-                        <TouchableOpacity onPress={() => { handleInputs() }}>
-                            <Text >Cadastrar</Text>
-                        </TouchableOpacity>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <View>
+                            <TouchableOpacity onPress={() => { setModal(false) }}><Text>X</Text></TouchableOpacity>
+                        </View>
+                        <View style={styles.viewInput}>
+                            <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
+                            <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                            <TextInput style={styles.input} value={email} placeholder='Email' onChangeText={(text) => { setEmail(text) }} />
+                            <TextInput style={styles.input} value={telefone} placeholder='Telefone' onChangeText={(text) => { setTelefone(text) }} />
+                            <TouchableOpacity onPress={() => { handleInputs() }}>
+                                <Text >Cadastrar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </Modal>
