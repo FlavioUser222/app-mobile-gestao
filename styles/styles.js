@@ -169,6 +169,7 @@ export const styles = StyleSheet.create({
     },
     vendasCard:{
         flexDirection:'row',
+        justifyContent:'space-between',
         width:300,
         height:120,
     },
