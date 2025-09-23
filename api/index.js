@@ -196,7 +196,7 @@ app.get('/faturamentoTotal', async (req, res) => {
             FROM vendas 
         `);
 
-               res.status(200).json({ faturamento: result.rows[0].faturamento_total });
+        res.status(200).json({ faturamento: result.rows[0].faturamento_total });
     } catch (err) {
         console.error(err);
         res.status(500).json('Erro no server');
@@ -236,6 +236,32 @@ app.get('/lucro', async (req, res) => {
     }
 
 })
+
+app.post('/cadastrarUser', async (req, res) => {
+
+    const { email, senha } = req.body
+    try {
+        const result = await pool.query(`
+            INSERT INTO usuario(email,senha) VALUES ($1,$2) RETURNING * ` , [email, senha])
+        res.status(201).json(result.rows);
+    } catch (error) {
+        res.status(500).json({ erro: 'Erro em cadastrar user' })
+    }
+})
+
+
+
+app.get('/users', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT * FROM usuario`)
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ erro: 'Erro em cadastrar user' })
+    }
+})
+
+
 
 
 
