@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View,SafeAreaView } from 'react-native';
 import { styles } from '../styles/styles';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -51,38 +51,40 @@ export default function Home({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.faturamento}>
-        <Text style={{ fontWeight: 'bold' }}>Faturamento total</Text>
-        <Text>{formatReal(faturamentoTotal)}</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <View style={styles.faturamento}>
+          <Text style={{ fontWeight: 'bold' }}>Faturamento total</Text>
+          <Text>{formatReal(faturamentoTotal)}</Text>
+        </View>
+
+        <View style={styles.faturamento}>
+          <Text style={{ fontWeight: 'bold' }}>Faturamento líquido (após despesas)</Text>
+          <Text>{formatReal(lucro)}</Text>
+        </View>
+
+        <View style={styles.faturamento}>
+          <Text style={{ fontWeight: 'bold' }}>Total de despesas</Text>
+          <Text>{formatReal(despesasTotais)}</Text>
+        </View>
+
+        <View style={styles.viewCadastro}>
+          <TouchableOpacity onPress={() => navigation.navigate('Cliente')} style={styles.opcoesCadasto}>
+            <Text style={styles.textCadastro} >Cadastro de clientes</Text>
+            <Ionicons name={"people"} size={25} color={"white"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Venda')} style={styles.opcoesCadasto}>
+            <Text style={styles.textCadastro}>Cadastro de vendas</Text>
+            <FontAwesome5 name={"money-bill"} size={25} color={"white"} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Despesa')} style={styles.opcoesCadasto}>
+            <Text style={styles.textCadastro}>Cadastro de despesas</Text>
+            <Ionicons name={"receipt"} size={25} color={"white"} />
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View style={styles.faturamento}>
-        <Text style={{ fontWeight: 'bold' }}>Faturamento líquido (após despesas)</Text>
-        <Text>{formatReal(lucro)}</Text>
-      </View>
-
-      <View style={styles.faturamento}>
-        <Text style={{ fontWeight: 'bold' }}>Total de despesas</Text>
-        <Text>{formatReal(despesasTotais)}</Text>
-      </View>
-
-      <View style={styles.viewCadastro}>
-        <TouchableOpacity onPress={() => navigation.navigate('Cliente')} style={styles.opcoesCadasto}>
-          <Text style={styles.textCadastro} >Cadastro de clientes</Text>
-          <Ionicons name={"people"} size={25} color={"white"} />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Venda')} style={styles.opcoesCadasto}>
-          <Text style={styles.textCadastro}>Cadastro de vendas</Text>
-          <FontAwesome5 name={"money-bill"} size={25} color={"white"} />
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate('Despesa')} style={styles.opcoesCadasto}>
-          <Text style={styles.textCadastro}>Cadastro de despesas</Text>
-          <Ionicons name={"receipt"} size={25} color={"white"} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
