@@ -23,9 +23,9 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     input: {
-        paddingHorizontal:20,
-        paddingVertical:20,
-        width:'100%',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        width: '100%',
         backgroundColor: '#d3d3d3ff'
     },
     viewInput: {
@@ -47,8 +47,7 @@ export const styles = StyleSheet.create({
     },
     viewBetweenData: {
         flex: 1,
-        gap: 15,
-        paddingTop:18,
+        paddingTop: 18,
     },
     topoDatela: {
         flex: 1,
@@ -57,13 +56,13 @@ export const styles = StyleSheet.create({
     },
     viewCadastro2: {
         marginTop: 50,
-        width:300,
-        height:50,
-        backgroundColor:'#fff',
-        alignItems:'center',
-        justifyContent:'center',
-        borderRadius:10,
-        backgroundColor:'#3b6cf1ff',
+        width: 300,
+        height: 50,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 10,
+        backgroundColor: '#3b6cf1ff',
     },
     viewVendas: {
         flex: 1,
@@ -74,12 +73,12 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 20,
         height: 100,
         marginTop: 20,
-        borderRadius: 8,
+        borderRadius: 20,
     },
     opcoes: {
         alignItems: 'center',
-        justifyContent:'center',
-        gap:20,
+        justifyContent: 'center',
+        gap: 20,
     },
     vendasCard: {
         flex: 1,
@@ -97,18 +96,16 @@ export const styles = StyleSheet.create({
         gap: 30,
     },
     viewClientes: {
-        width:270,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 100,
+        height: 130,
         backgroundColor: '#638bf8b4',
         paddingHorizontal: 20,
         marginTop: 20,
-        borderRadius: 8,
+        borderRadius: 20,
     },
     clienteData: {
-        justifyContent:'space-between',
-        gap:25,
+        justifyContent: 'space-between',
     },
     clienteVendas: {
         alignItems: 'center',
@@ -126,12 +123,12 @@ export const styles = StyleSheet.create({
         padding: 40,
         backgroundColor: '#fff',
         borderRadius: 10,
-        elevation: 10, 
+        elevation: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
-        marginTop:20,
+        marginTop: 20,
     },
     opcoesCadasto: {
         marginTop: 10,
@@ -139,14 +136,16 @@ export const styles = StyleSheet.create({
         width: 140,
         borderRadius: 10,
         backgroundColor: '#3b6cf1ff',
+        flexDirection:'row',
         alignItems: 'center',
-        justifyContent: 'center', 
-        padding:20,
-        textAlign:'center'
+        justifyContent: 'center',
+        padding: 20,
+        textAlign: 'center',
+        gap:15,
     },
-    textCadastro:{
-        color:'#fff',
-        fontWeight:700,
+    textCadastro: {
+        color: '#fff',
+        fontWeight: 700,
     },
 
     viewCadastro: {
@@ -159,51 +158,76 @@ export const styles = StyleSheet.create({
         marginTop: 30,
 
     },
-    clientesCard:{
-        flexDirection:'row',
-        flex:1,
-        alignItems:'center',
-        paddingVertical:50,
-        width:270,
-        height:95,
+    clientesCard: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        gap: 30,
     },
-    vendasCard:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        width:300,
-        height:120,
+    vendasCard: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 300,
+        height: 120,
     },
-    despesasCard:{
-        flexDirection:'row',
-        width:270,
-        height:95,
-      
+    despesasCard: {
+        flexDirection: 'row',
+        width: 270,
+        height: 120,
+
     },
-    vendasData:{
-        alignItems:'center',
-        marginTop:15,
+    vendasData: {
+        alignItems: 'center',
+        marginTop: 15,
     },
-    valorText:{
-        alignItems:'center',
-        justifyContent:'center'
+    valorText: {
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    modalInput:{
-        flex:1,
-        alignItems:'center',
-        marginTop:15,
+    modalInput: {
+        flex: 1,
+        alignItems: 'center',
+        marginTop: 15,
     },
-    modalClose:{
-        alignItems:'flex-end',
-        marginBottom:20,
+    modalClose: {
+        alignItems: 'flex-end',
+        marginBottom: 20,
     },
-    buttonCadastrar:{
-        width:100,
-        height:50,
-        backgroundColor:'#3b6cf1ff',
-        alignItems:'center',
-        justifyContent:'center'
-    
+    buttonCadastrar: {
+        width: 100,
+        height: 50,
+        backgroundColor: '#3b6cf1ff',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    textData: {
+        fontSize: 17,
+        fontWeight: 400,
+        fontFamily: 'Arial',
+        paddingBottom: 25,
+    },
+    textNome: {
+        fontSize: 15,
+        fontWeight: 500,
+        fontFamily: 'Arial',
+    },
+    textVendas: {
+        fontSize: 15,
+        fontWeight: 600,
+        fontFamily: 'Arial',
+    },
+    textButton: {
+        fontSize: 17,
+        fontWeight: 700,
+        fontFamily: 'Arial',
+        color: '#fff',
+    },
+    textTitle: {
+        fontSize: 18,
+        fontWeight: 600,
+        fontFamily: 'Arial',
     }
+
 
 
 
