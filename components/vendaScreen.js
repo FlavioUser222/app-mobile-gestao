@@ -3,7 +3,8 @@ import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList } from 
 import axios from 'axios';
 import { styles } from '../styles/styles';
 import { Picker } from '@react-native-picker/picker'
-import { Feather } from 'react-native-vector-icons'
+import { Feather, Ionicons } from 'react-native-vector-icons'
+
 
 export default function Cliente() {
 
@@ -33,12 +34,18 @@ export default function Cliente() {
 
     function formatarDataSemHora(dataHora) {
         if (!dataHora) return '';
-        const data = dataHora.split('T')[0].split(' ')[0]; 
 
-        const partes = data.split('-');
-        if (partes.length !== 3) return dataHora
+        const data = dataHora.split('T')[0]; // "2025-09-23"
+        const [ano, mes, dia] = data.split('-');
 
-        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        const nomesMeses = [
+            'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+            'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+        ];
+
+        const mesExtenso = nomesMeses[parseInt(mes, 10) - 1];
+
+        return `${dia} de ${mesExtenso} de ${ano}`;
     }
 
 
@@ -66,6 +73,11 @@ export default function Cliente() {
 
     }
 
+
+    function formatReal(value) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
+
     async function deletarVenda(id) {
         try {
             let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}`)
@@ -87,23 +99,23 @@ export default function Cliente() {
         <View style={styles.containerVendas}>
             <View style={styles.viewCadastro2}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
-                    <Text>Cadastrar nova venda</Text>
+                    <Text style={styles.textButton}>Cadastrar nova venda</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.topoDatela}>
-                <Text>Vendas realizadas</Text>
+                <Text style={styles.textTitle}> Vendas realizadas</Text>
                 <FlatList data={listaVendas} renderItem={({ item }) => (
                     <TouchableOpacity style={styles.viewVendas} onLongPress={() => { deletarVenda(item.id) }}>
                         <View style={styles.vendasCard}>
                             <View style={styles.vendasData}>
-                                <Text>{formatarDataSemHora(item.data)}</Text>
+                                <Text style={styles.textData}>{formatarDataSemHora(item.data)}</Text>
                                 <Image />
                             </View>
                             <View style={styles.opcoes}>
                                 <Text>Vendas:{item.quantidadevendas}</Text>
-                                <Text>Cliente:{buscarNomeClientePorId(item.cliente_id)}</Text>
-                                <Text>Valor:{item.valor}</Text>
+                                <Text style={styles.textNome}>Cliente:{buscarNomeClientePorId(item.cliente_id)}</Text>
+                                <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
                             </View>
 
                         </View></TouchableOpacity>)} />
@@ -134,7 +146,7 @@ export default function Cliente() {
                                 <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                                 <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
-                                    <Text>Cadastrar</Text>
+                                    <Text style={styles.textButton}>Cadastrar</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
