@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View, Modal, TextInput, FlatList } from 'react-native';
+import { Text, TouchableOpacity, View, Modal, TextInput, FlatList  } from 'react-native';
 import axios from 'axios';
 import { styles } from '../styles/styles';
 import { Feather } from '@expo/vector-icons';
@@ -15,6 +15,9 @@ export default function Cliente() {
     let [telefone, setTelefone] = useState()
     let [vendasCliente, setVendasClientes] = useState([])
 
+
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         async function fetchData() {
@@ -73,18 +76,37 @@ export default function Cliente() {
     }
 
 
+    function formatarDataSemHora(dataHora) {
+        if (!dataHora) return '';
+
+        const data = dataHora.split('T')[0]; // "2025-09-23"
+        const [ano, mes, dia] = data.split('-');
+
+        const nomesMeses = [
+            'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+            'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+        ];
+
+        const mesExtenso = nomesMeses[parseInt(mes, 10) - 1];
+
+        return `${dia} de ${mesExtenso} de ${ano}`;
+    }
+
+
+
+
 
 
     return (
         <View style={styles.container}>
             <View style={styles.viewCadastro2}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
-                    <Text>Cadastrar novo cliente</Text>
+                    <Text style={styles.textButton}>Cadastrar novo cliente</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.topoDatela}>
-                <Text>Clientes cadastrados</Text>
+                <Text style={styles.textTitle}>Clientes cadastrados</Text>
                 <FlatList
                     data={clientes}
                     keyExtractor={(item, index) => item.id?.toString() || index.toString()}
@@ -96,11 +118,13 @@ export default function Cliente() {
                             <TouchableOpacity onLongPress={() => { deletarCliente(item.id) }} style={styles.viewClientes}>
                                 <View style={styles.clientesCard}>
                                     <View style={styles.clienteData}>
-                                        <Text>{item.data}</Text>
-                                        <Text>Nome: {item.nome}</Text>
+                                        <Text style={styles.textData}>{formatarDataSemHora(item.data)}</Text>
+                                        <Text style={styles.textNome}>Nome: {item.nome}</Text>
+                                        <Text>{item.email}</Text>
+                                        <Text>Tel: {item.telefone}</Text>
                                     </View>
                                     <View style={styles.clienteVendas}>
-                                        <Text>Vendas: {vendaInfo ? vendaInfo.totalvendas : 0}</Text>
+                                        <Text style={styles.textVendas}>Vendas: {vendaInfo ? vendaInfo.totalvendas : 0}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -119,11 +143,14 @@ export default function Cliente() {
                         </View>
                         <View style={styles.viewInput}>
                             <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
+                            <TouchableOpacity onPress={() => setOpen(true)} style={styles.input}>
+                                <Text>{formatarDataSemHora(date.toISOString()) || 'Selecione uma data'}</Text>
+                            </TouchableOpacity>
                             <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
                             <TextInput style={styles.input} value={email} placeholder='Email' onChangeText={(text) => { setEmail(text) }} />
                             <TextInput style={styles.input} value={telefone} placeholder='Telefone' onChangeText={(text) => { setTelefone(text) }} />
                             <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
-                                <Text >Cadastrar</Text>
+                                <Text style={styles.textButton}>Cadastrar</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
