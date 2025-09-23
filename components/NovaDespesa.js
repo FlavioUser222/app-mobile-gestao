@@ -4,6 +4,9 @@ import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList, Alert 
 import { styles } from '../styles/styles';
 import { Feather } from '@expo/vector-icons';
 
+
+
+
 export default function Cliente() {
 
     const [modal, setModal] = useState(false)
@@ -54,27 +57,48 @@ export default function Cliente() {
             res.status(500)
         }
     }
+    function formatarDataSemHora(dataHora) {
+        if (!dataHora) return '';
 
+        const data = dataHora.split('T')[0]; // "2025-09-23"
+        const [ano, mes, dia] = data.split('-');
+
+        const nomesMeses = [
+            'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+            'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+        ];
+
+        const mesExtenso = nomesMeses[parseInt(mes, 10) - 1];
+
+        return `${dia} de ${mesExtenso} de ${ano}`;
+    }
+
+
+
+
+    function formatReal(value) {
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.viewCadastro2}>
                 <TouchableOpacity onPress={() => { setModal(true) }}>
-                    <Text>Cadastrar nova despesa</Text>
+                    <Text style={styles.textButton}>Cadastrar nova despesa</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.topoDatela}>
-                <Text>Despesas pendentes</Text>
+                <Text style={styles.textTitle}>Despesas pendentes</Text>
                 <FlatList data={listaDespesa} renderItem={({ item }) => (
                     <TouchableOpacity onLongPress={() => { deletarDespesa(item.id) }} style={styles.viewDespesas}>
                         <View style={styles.despesasCard}>
                             <View style={styles.viewBetweenData}>
-                                <Text>{item.data}</Text>
-                                <Text>{item.nome}</Text>
+                                <Text style={styles.textData}>{formatarDataSemHora(item.data)}</Text>
+                                <Text style={styles.textNome}>{item.nome}</Text>
                             </View>
                             <View style={styles.valorText}>
-                                <Text>Valor:{item.valor}</Text>
+                                <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
                             </View>
 
                         </View>
@@ -87,14 +111,14 @@ export default function Cliente() {
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>
                         <View>
-                            <TouchableOpacity onPress={() => { setModal(false) }} style={styles.modalClose}><Text><Feather name='x' size={30} color={'Black'}/></Text></TouchableOpacity>
+                            <TouchableOpacity onPress={() => { setModal(false) }} style={styles.modalClose}><Text><Feather name='x' size={30} color={'Black'} /></Text></TouchableOpacity>
                         </View>
                         <View style={styles.viewInput}>
                             <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
                             <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                             <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
                             <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
-                                <Text>Cadastrar</Text>
+                                <Text style={styles.textButton}>Cadastrar</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
