@@ -70,6 +70,18 @@ export default function Cliente() {
     }
 
     async function handleInputs() {
+
+        if (
+            !clienteIdSelecionado ||
+            !quantidadeVendas || isNaN(Number(quantidadeVendas)) ||
+            !valor || isNaN(Number(valor)) ||
+            !data || !(data instanceof Date)
+        ) {
+            alert("Preencha todos os campos corretamente.");
+            return;
+        }
+
+        
         const novaVenda = {
             cliente_id: clienteIdSelecionado,
             quantidadeVendas,
@@ -77,6 +89,8 @@ export default function Cliente() {
             valor,
             usuario_id: usuarioId,
         }
+
+
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
             setListaVendas([...listaVendas, res.data])
@@ -177,9 +191,6 @@ export default function Cliente() {
                                         onChange={onChangeDate}
                                     />
                                 )}
-
-
-
 
                                 {/* <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} /> */}
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
