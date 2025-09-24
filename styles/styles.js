@@ -240,6 +240,21 @@ export const styles = StyleSheet.create({
         padding:30,
         gap:10,
     },
+      buttonCadastrar2: {
+        width: 200,
+        height: 40,
+        backgroundColor: '#3b6cf1ff',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+     input2: {
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        width: 300,
+        height: 60,
+        backgroundColor: '#d3d3d3ff'
+    },
 
 
 
