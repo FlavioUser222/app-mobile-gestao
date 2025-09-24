@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View,SafeAreaView } from 'react-native';
+import { Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { styles } from '../styles/styles';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -6,43 +6,42 @@ import {
   Feather, Ionicons, FontAwesome5
 } from 'react-native-vector-icons'
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
 export default function Home({ navigation }) {
   const [faturamentoTotal, setFaturamentoTotal] = useState(0);
   const [despesasTotais, setDespesasTotais] = useState(0);
   const [lucro, setLucro] = useState(0);
 
+
+
   useEffect(() => {
-    async function fetchFaturamento() {
+    async function fetchDados() {
       try {
-        const res = await axios.get('https://app-mobile-gestao.onrender.com/faturamentoTotal');
-        setFaturamentoTotal(res.data.faturamento);
+        const id = await AsyncStorage.getItem('@usuario_id');
+        console.log('usuario_id do AsyncStorage:', id);
+        if (!id) return;
+
+        const faturamentoRes = await axios.get(`https://app-mobile-gestao.onrender.com/faturamentoTotal?usuario_id=${id}`);
+        setFaturamentoTotal(faturamentoRes.data.faturamento);
+
+        const despesasRes = await axios.get(`https://app-mobile-gestao.onrender.com/despesas-totais?usuario_id=${id}`);
+        setDespesasTotais(despesasRes.data.despesas);
+
+
+        const lucroRes = await axios.get(`https://app-mobile-gestao.onrender.com/lucro?usuario_id=${id}`);
+        setLucro(lucroRes.data.lucro);
+
       } catch (error) {
-        console.error('Erro ao buscar faturamento:', error);
+        console.error('Erro ao carregar dados:', error);
       }
     }
 
-    async function fetchDespesas() {
-      try {
-        const res = await axios.get('https://app-mobile-gestao.onrender.com/despesas-totais');
-        setDespesasTotais(res.data.despesas);
-      } catch (error) {
-        console.error('Erro ao buscar despesas:', error);
-      }
-    }
-
-    async function fetchLucro() {
-      try {
-        const res = await axios.get('https://app-mobile-gestao.onrender.com/lucro');
-        setLucro(res.data.lucro);
-      } catch (error) {
-        console.error('Erro ao buscar lucro:', error);
-      }
-    }
-
-    fetchFaturamento();
-    fetchDespesas();
-    fetchLucro();
+    fetchDados();
   }, []);
+
 
 
 
