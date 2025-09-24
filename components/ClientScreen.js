@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View, Modal, TextInput, FlatList  } from 'react-native';
+import { Text, TouchableOpacity, View, Modal, TextInput, FlatList } from 'react-native';
 import axios from 'axios';
 import { styles } from '../styles/styles';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker, { RNDateTimePicker } from '@react-native-community/datetimepicker';
+
+
 
 
 export default function Cliente() {
@@ -10,38 +14,45 @@ export default function Cliente() {
     const [modal, setModal] = useState(false)
     let [clientes, setClientes] = useState([])
     let [nome, setNome] = useState('')
-    let [data, setData] = useState('')
+    // let [data, setData] = useState('')
     let [email, setEmail] = useState('')
     let [telefone, setTelefone] = useState()
     let [vendasCliente, setVendasClientes] = useState([])
+    const [usuarioId, setUsuarioId] = useState(null);
 
 
-    const [date, setDate] = useState(new Date())
-    const [open, setOpen] = useState(false)
+    const [data, setData] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+
 
     useEffect(() => {
         async function fetchData() {
+            const id = await AsyncStorage.getItem('@usuario_id');
+            setUsuarioId(id);
+            if (!id) return;
+
             try {
-                let resClientes = await axios.get('https://app-mobile-gestao.onrender.com/clientes')
-                setClientes(resClientes.data)
+                const resClientes = await axios.get(`https://app-mobile-gestao.onrender.com/clientes?usuario_id=${id}`);
+                setClientes(resClientes.data);
 
-                let resVendasCliente = await axios.get('https://app-mobile-gestao.onrender.com/clientes-vendas')
-
-                setVendasClientes(resVendasCliente.data)
+                const resVendasCliente = await axios.get(`https://app-mobile-gestao.onrender.com/clientes-vendas?usuario_id=${id}`);
+                setVendasClientes(resVendasCliente.data);
             } catch (err) {
-                console.log('Erro ao buscar clientes')
+                console.error('Erro ao buscar clientes ou vendas:', err);
             }
         }
 
-        fetchData()
-    }, [])
+        fetchData();
+    }, []);
 
     async function handleInputs() {
         const novoCliente = {
             nome,
-            data,
+            data: data.toISOString(),
             email,
             telefone: Number(telefone),
+            usuario_id: usuarioId
         };
 
         console.log('🔼 Enviando para backend:', novoCliente);
@@ -51,8 +62,9 @@ export default function Cliente() {
             console.log('✅ Cliente cadastrado com sucesso:', res.data);
 
             setClientes([...clientes, res.data]);
-            alert('Despesa cadastrada com sucesso')
+            alert('Cliente cadastrado com sucesso')
 
+            
             setNome('');
             setData('');
             setEmail('');
@@ -76,6 +88,13 @@ export default function Cliente() {
     }
 
 
+    function onChangeDate(event, selectedDate) {
+        setShowDatePicker(false)
+        if (selectedDate) {
+            setData(selectedDate)
+        }
+    }
+
     function formatarDataSemHora(dataHora) {
         if (!dataHora) return '';
 
@@ -91,8 +110,6 @@ export default function Cliente() {
 
         return `${dia} de ${mesExtenso} de ${ano}`;
     }
-
-
 
 
 
@@ -143,10 +160,23 @@ export default function Cliente() {
                         </View>
                         <View style={styles.viewInput}>
                             <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
-                            <TouchableOpacity onPress={() => setOpen(true)} style={styles.input}>
-                                <Text>{formatarDataSemHora(date.toISOString()) || 'Selecione uma data'}</Text>
+
+                            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
+                                <Text>
+                                    {data ? data.toLocaleDateString('pt-BR') : 'Selecionar data'}
+                                </Text>
                             </TouchableOpacity>
-                            <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={data}
+                                    mode="date"
+                                    display="default"
+                                    onChange={onChangeDate}
+                                />
+                            )}
+
+
+                            {/* <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} /> */}
                             <TextInput style={styles.input} value={email} placeholder='Email' onChangeText={(text) => { setEmail(text) }} />
                             <TextInput style={styles.input} value={telefone} placeholder='Telefone' onChangeText={(text) => { setTelefone(text) }} />
                             <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
