@@ -26,12 +26,12 @@ testConnection();
 
 
 app.post('/cliente', async (req, res) => {
-    const { nome, data, email, telefone } = req.body
+    const { nome, data, email, telefone, usuario_id } = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO clientes (nome, data,email,telefone) VALUES ($1, $2, $3, $4) RETURNING *',
-            [nome, data, email, telefone]
+            'INSERT INTO clientes (nome, data,email,telefone,usuario_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [nome, data, email, telefone,usuario_id]
         )
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -41,6 +41,8 @@ app.post('/cliente', async (req, res) => {
 })
 
 app.get('/clientes-vendas', async (req, res) => {
+    const { usuario_id } = req.query
+
     try {
         const result = await pool.query(`
             SELECT 
@@ -51,9 +53,10 @@ app.get('/clientes-vendas', async (req, res) => {
                 COALESCE(SUM(v.quantidadeVendas), 0) AS totalVendas
             FROM clientes c
             LEFT JOIN vendas v ON v.cliente_id = c.id
+             WHERE c.usuario_id = $1
             GROUP BY c.id, c.nome, c.email, c.telefone
             ORDER BY c.nome
-        `);
+        `,[usuario_id]);
 
         res.status(200).json(result.rows);
     } catch (err) {
@@ -64,9 +67,12 @@ app.get('/clientes-vendas', async (req, res) => {
 
 
 app.get('/clientes', async (req, res) => {
+    const { usuario_id } = req.query
+
     try {
         const result = await pool.query(
-            'SELECT * FROM clientes'
+            'SELECT * FROM clientes WHERE usuario_id = $1',
+            [usuario_id]
         )
         res.status(200).json(result.rows)
     } catch (err) {
@@ -76,12 +82,12 @@ app.get('/clientes', async (req, res) => {
 })
 
 app.post('/venda', async (req, res) => {
-    const { cliente_id, quantidadeVendas, data, valor } = req.body
+    const { cliente_id, quantidadeVendas, data, valor, usuario_id } = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO vendas (cliente_id, quantidadeVendas, data,valor) VALUES ($1, $2, $3, $4) RETURNING *',
-            [cliente_id, quantidadeVendas, data, valor]
+            'INSERT INTO vendas (cliente_id, quantidadeVendas, data,valor,usuario_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [cliente_id, quantidadeVendas, data, valor, usuario_id]
         )
 
         res.status(201).json(result.rows[0]);
@@ -93,9 +99,10 @@ app.post('/venda', async (req, res) => {
 
 
 app.get('/vendas', async (req, res) => {
+    const { usuario_id } = req.query
     try {
         const result = await pool.query(
-            `SELECT * FROM vendas`
+            `SELECT * FROM vendas WHERE usuario_id = $1`, [usuario_id]
         )
         res.status(200).json(result.rows)
     } catch (err) {
@@ -106,12 +113,12 @@ app.get('/vendas', async (req, res) => {
 
 
 app.post('/despesa', async (req, res) => {
-    const { nome, valor, data } = req.body
+    const { nome, valor, data, usuario_id } = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO despesas (nome, valor, data) VALUES ($1, $2, $3) RETURNING *',
-            [nome, valor, data]
+            'INSERT INTO despesas (nome, valor, data,usuario_id) VALUES ($1, $2, $3,$4) RETURNING *',
+            [nome, valor, data, usuario_id]
         )
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -122,9 +129,10 @@ app.post('/despesa', async (req, res) => {
 
 
 app.get('/despesas', async (req, res) => {
+    const { usuario_id } = req.query
     try {
         const result = await pool.query(
-            'SELECT * FROM despesas'
+            'SELECT * FROM despesas WHERE usuario_id = $1', [usuario_id]
         )
         res.status(200).json(result.rows)
     } catch (err) {
@@ -189,12 +197,14 @@ app.delete('/cliente/:id', async (req, res) => {
 })
 
 app.get('/faturamentoTotal', async (req, res) => {
+    const { usuario_id } = req.query
     try {
         const result = await pool.query(`
             SELECT 
                 COALESCE(SUM(valor), 0) AS faturamento_total
             FROM vendas 
-        `);
+            WHERE usuario_id = $1
+`, [usuario_id]);
 
         res.status(200).json({ faturamento: result.rows[0].faturamento_total });
     } catch (err) {
@@ -204,12 +214,16 @@ app.get('/faturamentoTotal', async (req, res) => {
 })
 
 app.get('/despesas-totais', async (req, res) => {
+
+    const { usuario_id } = req.query
+
     try {
         const result = await pool.query(`
             SELECT 
                 COALESCE(SUM(valor), 0) AS despesas_totais
             FROM despesas
-        `);
+            WHERE usuario_id = $1
+        `, [usuario_id]);
 
         res.status(200).json({ despesas: result.rows[0].despesas_totais });
     } catch (err) {
@@ -220,13 +234,14 @@ app.get('/despesas-totais', async (req, res) => {
 
 
 app.get('/lucro', async (req, res) => {
+    const { usuario_id } = req.query
 
     try {
         const result = await pool.query(`
             SELECT 
-                COALESCE((SELECT SUM(valor) FROM vendas), 0) -
-                COALESCE((SELECT SUM(valor) FROM despesas), 0) AS lucro
-        `);
+               COALESCE((SELECT SUM(valor) FROM vendas WHERE usuario_id = $1), 0) -
+               COALESCE((SELECT SUM(valor) FROM despesas WHERE usuario_id = $1), 0) AS lucro
+        `,[usuario_id]);
 
         res.status(200).json({ lucro: result.rows[0].lucro });
 
