@@ -255,7 +255,7 @@ app.get('/users', async (req, res) => {
     try {
         const result = await pool.query(`
             SELECT * FROM usuario`)
-        res.status(201).json(result.rows[0]);
+        res.status(201).json(result.rows);
     } catch (error) {
         res.status(500).json({ erro: 'Erro em cadastrar user' })
     }
