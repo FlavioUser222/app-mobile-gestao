@@ -226,7 +226,21 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 600,
         fontFamily: 'Arial',
-    }
+    },
+    loginContainer:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+    },
+
+    loginCard:{
+        flex:1,
+        alignItems:'center',
+        justifyContent:'center',
+        padding:30,
+        gap:10,
+    },
+
 
 
 
