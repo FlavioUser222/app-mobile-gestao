@@ -6,13 +6,23 @@ import Home from './components/Home'
 import Cliente from './components/ClientScreen'
 import Despesa from './components/NovaDespesa'
 import Venda from './components/vendaScreen'
+import CadastrarUsuario from './components/cadastroScreen';
+import loginScreen from './components/loginScreen';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer >
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={loginScreen} options={{
+          headerStyle: { backgroundColor: '#3b6cf1ff' },
+          headerTintColor: 'white',
+        }} />
+        <Stack.Screen name="Cadastro" component={CadastrarUsuario} options={{
+          headerStyle: { backgroundColor: '#3b6cf1ff' },
+          headerTintColor: 'white',
+        }} />
         <Stack.Screen name="Home" component={Home} options={{
           headerStyle: { backgroundColor: '#3b6cf1ff' },
           headerTintColor: 'white',
