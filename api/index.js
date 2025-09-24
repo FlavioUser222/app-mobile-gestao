@@ -262,6 +262,29 @@ app.get('/users', async (req, res) => {
 })
 
 
+app.post('/login', async (req, res) => {
+    const { email, senha } = req.body;
+
+    try {
+        const result = await pool.query('SELECT * FROM usuario WHERE email = $1', [email]);
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ erro: 'Usuário não encontrado' })
+        }
+
+        const user = result.rows[0];
+        if (user.senha !== senha) {
+            return res.status(401).json({ erro: 'Senha incorreta' });
+        }
+
+        res.status(200).json({ mensagem: 'Login bem-sucedido', usuario: user })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ erro: 'Erro interno do servidor' })
+    }
+});
+
 
 
 
