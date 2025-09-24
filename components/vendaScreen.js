@@ -4,6 +4,10 @@ import axios from 'axios';
 import { styles } from '../styles/styles';
 import { Picker } from '@react-native-picker/picker'
 import { Feather, Ionicons } from 'react-native-vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker, { RNDateTimePicker } from '@react-native-community/datetimepicker';
+
+
 
 
 export default function Cliente() {
@@ -12,24 +16,34 @@ export default function Cliente() {
 
     const [listaVendas, setListaVendas] = useState([])
     let [quantidadeVendas, setQuantidadeVendas] = useState()
-    let [data, setData] = useState()
+    // let [data, setData] = useState()
     let [valor, setValor] = useState()
     const [clienteIdSelecionado, setClienteIdSelecionado] = useState(null);
     const [listaClientes, setListaClientes] = useState([])
-
+    const [usuarioId, setUsuarioId] = useState(null)
+    const [data, setData] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
 
     useEffect(() => {
         async function fetchData() {
-            let vendasRes = await axios.get('https://app-mobile-gestao.onrender.com/vendas')
-            setListaVendas(vendasRes.data)
+            const id = await AsyncStorage.getItem('@usuario_id');
+            setUsuarioId(id);
 
-            let clientesRes = await axios.get('https://app-mobile-gestao.onrender.com/clientes')
-            setListaClientes(clientesRes.data)
+            if (!id) return;
+            try {
+                let vendasRes = await axios.get(`https://app-mobile-gestao.onrender.com/vendas?usuario_id=${id}`);
+                setListaVendas(vendasRes.data);
+
+                let clientesRes = await axios.get(`https://app-mobile-gestao.onrender.com/clientes?usuario_id=${id}`);
+                setListaClientes(clientesRes.data);
+            } catch (error) {
+                console.error('Erro ao buscar vendas/clientes:', error);
+            }
         }
 
-        fetchData()
-    }, [])
+        fetchData();
+    }, []);
 
 
     function formatarDataSemHora(dataHora) {
@@ -48,14 +62,20 @@ export default function Cliente() {
         return `${dia} de ${mesExtenso} de ${ano}`;
     }
 
-
+    function onChangeDate(event, selectedDate) {
+        setShowDatePicker(false)
+        if (selectedDate) {
+            setData(selectedDate)
+        }
+    }
 
     async function handleInputs() {
         const novaVenda = {
             cliente_id: clienteIdSelecionado,
             quantidadeVendas,
             data,
-            valor
+            valor,
+            usuario_id: usuarioId,
         }
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
@@ -144,7 +164,24 @@ export default function Cliente() {
                             <View style={styles.viewInput}>
                                 <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
                                 <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
-                                <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                                <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
+                                    <Text>
+                                        {data ? data.toLocaleDateString('pt-BR') : 'Selecionar data'}
+                                    </Text>
+                                </TouchableOpacity>
+                                {showDatePicker && (
+                                    <DateTimePicker
+                                        value={data}
+                                        mode="date"
+                                        display="default"
+                                        onChange={onChangeDate}
+                                    />
+                                )}
+
+
+
+
+                                {/* <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} /> */}
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                     <Text style={styles.textButton}>Cadastrar</Text>
                                 </TouchableOpacity>
