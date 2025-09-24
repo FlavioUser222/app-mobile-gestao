@@ -23,7 +23,6 @@ export default function loginScreen({ navigation }) {
                 const usuario_id = res.data.usuario.id
                 await AsyncStorage.setItem('@usuario_id', usuario_id.toString())
 
-                alert('Bem-vindo ao sistema')
                 navigation.navigate('Home')
             }
 
@@ -36,12 +35,12 @@ export default function loginScreen({ navigation }) {
         <View style={styles.loginContainer}>
             <View style={styles.loginCard}>
                 <Text>Entrar no sistema</Text>
-                <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input} placeholder='Email' />
-                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input} placeholder='senha' />
-                <TouchableOpacity onPress={() => { entrarNoSistema() }} style={styles.buttonCadastrar}>
+                <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input2} placeholder='Email' />
+                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2} placeholder='senha' />
+                <TouchableOpacity onPress={() => { entrarNoSistema() }} style={styles.buttonCadastrar2}>
                     <Text style={styles.textButton}>Entrar</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }} style={styles.buttonCadastrar}>
+                <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }} style={styles.buttonCadastrar2}>
                     <Text style={styles.textButton}>Não possui conta?</Text>
                 </TouchableOpacity>
             </View>
