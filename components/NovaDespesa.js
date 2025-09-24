@@ -4,7 +4,8 @@ import { Text, TouchableOpacity, View, Image, Modal, TextInput, FlatList, Alert 
 import { styles } from '../styles/styles';
 import { Feather } from '@expo/vector-icons';
 
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateTimePicker, { RNDateTimePicker } from '@react-native-community/datetimepicker';
 
 
 export default function Cliente() {
@@ -13,25 +14,36 @@ export default function Cliente() {
     const [listaDespesa, setListaDespesa] = useState([])
     let [nome, setNome] = useState('')
     let [valor, setValor] = useState()
-    let [data, setData] = useState()
+    // let [data, setData] = useState()
+    const [usuarioId, setUsuarioId] = useState(null);
 
+    const [data, setData] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
-            let res = await axios.get('https://app-mobile-gestao.onrender.com/despesas')
+            const id = await AsyncStorage.getItem('@usuario_id');
+            setUsuarioId(id);
 
-            setListaDespesa(res.data)
+            if (!id) return;
+
+            try {
+                let res = await axios.get(`https://app-mobile-gestao.onrender.com/despesas?usuario_id=${id}`);
+                setListaDespesa(res.data);
+            } catch (err) {
+                console.error('Erro ao buscar despesas:', err);
+            }
         }
 
-        fetchData()
+        fetchData();
     }, [])
-
 
     async function handleInputs() {
         const novaDespesa = {
             nome,
             valor,
-            data
+            data,
+            usuario_id: usuarioId
         }
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/despesa', novaDespesa)
@@ -47,6 +59,15 @@ export default function Cliente() {
         }
 
     }
+
+    function onChangeDate(event, selectedDate) {
+        setShowDatePicker(false)
+        if (selectedDate) {
+            setData(selectedDate)
+        }
+    }
+
+
 
     async function deletarDespesa(id) {
         try {
@@ -116,7 +137,25 @@ export default function Cliente() {
                         <View style={styles.viewInput}>
                             <TextInput style={styles.input} value={nome} placeholder='Nome' onChangeText={(text) => { setNome(text) }} />
                             <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
-                            <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} />
+                            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
+                                <Text>
+                                    {data ? data.toLocaleDateString('pt-BR') : 'Selecionar data'}
+                                </Text>
+                            </TouchableOpacity>
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={data}
+                                    mode="date"
+                                    display="default"
+                                    onChange={onChangeDate}
+                                />
+                            )}
+
+
+
+
+
+                            {/* <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} /> */}
                             <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                 <Text style={styles.textButton}>Cadastrar</Text>
                             </TouchableOpacity>
