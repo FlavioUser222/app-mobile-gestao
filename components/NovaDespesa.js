@@ -39,6 +39,23 @@ export default function Cliente() {
     }, [])
 
     async function handleInputs() {
+        if (!nome || nome.trim() === '') {
+            Alert.alert("Erro", "O campo nome é obrigatório.");
+            return;
+        }
+
+        if (!valor || isNaN(Number(valor))) {
+            Alert.alert("Erro", "Informe um valor numérico válido.");
+            return;
+        }
+
+        if (!data || !(data instanceof Date)) {
+            Alert.alert("Erro", "Selecione uma data válida.");
+            return;
+        }
+
+
+
         const novaDespesa = {
             nome,
             valor,
