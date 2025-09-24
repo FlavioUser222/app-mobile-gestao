@@ -7,8 +7,9 @@ import { Feather, Ionicons } from 'react-native-vector-icons'
 
 
 export default function CadastrarUsuario() {
-    const [email, setEmail] = useState([])
-    const [senha, setSenha] = useState([])
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+
 
     async function postUsuario() {
         let newUser = {
@@ -17,18 +18,20 @@ export default function CadastrarUsuario() {
         }
         try {
             let res = await axios.post("https://app-mobile-gestao.onrender.com/cadastrarUser", newUser)
+            alert('Usuario cadastrado',res.data)
         } catch (error) {
-            res.send(500, "Erro ao cadastrar usuario")
+            alert(500, "Erro ao cadastrar usuario")
         }
     }
 
     return (
-        <View>
-            <View>
-                <TextInput value={email} onChangeText={(text) => { setEmail(text) }} />
-                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} />
-                <TouchableOpacity onPress={() => { postUsuario() }}>
-                    <Text>Cadastrar</Text>
+        <View style={styles.loginContainer}>
+            <View style={styles.loginCard}>
+                <Text>Cadastrar no sistema</Text>
+                <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input} placeholder='Cadastrar email' />
+                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input} placeholder='Cadastrar senha' />
+                <TouchableOpacity onPress={() => { postUsuario() }} style={styles.buttonCadastrar}>
+                    <Text style={styles.textButton}>Cadastrar</Text>
                 </TouchableOpacity>
             </View>
         </View>
