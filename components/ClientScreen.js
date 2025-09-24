@@ -47,6 +47,34 @@ export default function Cliente() {
     }, []);
 
     async function handleInputs() {
+
+
+        if (!nome || nome.trim().length < 2) {
+            alert("Informe um nome válido com pelo menos 2 caracteres.");
+            return;
+        }
+
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+            alert("Informe um e-mail válido.");
+            return;
+        }
+
+        const telefoneNumerico = telefone.replace(/\D/g, '')
+        if (!telefoneNumerico || telefoneNumerico.length < 8) {
+            alert("Informe um telefone válido com pelo menos 8 números.")
+            return
+        }
+
+        if (!data || !(data instanceof Date)) {
+            alert("Selecione uma data válida.");
+            return;
+        }
+
+
+
+
         const novoCliente = {
             nome,
             data: data.toISOString(),
@@ -64,7 +92,7 @@ export default function Cliente() {
             setClientes([...clientes, res.data]);
             alert('Cliente cadastrado com sucesso')
 
-            
+
             setNome('');
             setData('');
             setEmail('');
@@ -177,8 +205,9 @@ export default function Cliente() {
 
 
                             {/* <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} /> */}
-                            <TextInput style={styles.input} value={email} placeholder='Email' onChangeText={(text) => { setEmail(text) }} />
-                            <TextInput style={styles.input} value={telefone} placeholder='Telefone' onChangeText={(text) => { setTelefone(text) }} />
+                            <TextInput style={styles.input} value={email} placeholder='Email' keyboardType='email-address'
+                                autoCapitalize='none' onChangeText={(text) => { setEmail(text) }} />
+                            <TextInput style={styles.input} value={telefone} placeholder='Telefone' keyboardType='numeric' onChangeText={(text) => { setTelefone(text) }} />
                             <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                 <Text style={styles.textButton}>Cadastrar</Text>
                             </TouchableOpacity>
