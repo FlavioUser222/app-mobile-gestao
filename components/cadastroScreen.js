@@ -28,9 +28,9 @@ export default function CadastrarUsuario() {
         <View style={styles.loginContainer}>
             <View style={styles.loginCard}>
                 <Text>Cadastrar no sistema</Text>
-                <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input} placeholder='Cadastrar email' />
-                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input} placeholder='Cadastrar senha' />
-                <TouchableOpacity onPress={() => { postUsuario() }} style={styles.buttonCadastrar}>
+                <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input2} placeholder='Cadastrar email' />
+                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2} placeholder='Cadastrar senha' />
+                <TouchableOpacity onPress={() => { postUsuario() }} style={styles.buttonCadastrar2}>
                     <Text style={styles.textButton}>Cadastrar</Text>
                 </TouchableOpacity>
             </View>
