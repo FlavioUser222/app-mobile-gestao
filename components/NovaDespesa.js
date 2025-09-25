@@ -87,11 +87,11 @@ export default function Cliente() {
 
     async function deletarDespesa(id) {
         try {
-            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/despesa/${id}`)
+            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/despesa/${id}?usuario_id=${usuarioId}`)
             setListaDespesa(listaDespesa.filter(item => item._id !== id))
             alert('Despesa deletada com sucesso!')
         } catch (error) {
-            res.status(500)
+            console.error(500)
         }
     }
     function formatarDataSemHora(dataHora) {
@@ -184,4 +184,3 @@ export default function Cliente() {
         </View>
     );
 }
-
