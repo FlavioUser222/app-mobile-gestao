@@ -22,9 +22,12 @@ export default function Cliente() {
     const [listaClientes, setListaClientes] = useState([])
     const [usuarioId, setUsuarioId] = useState(null)
     const [data, setData] = useState(new Date());
-    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false)
+    const[isPressed,setIsPressed] = useState()
 
 
+
+    
     useEffect(() => {
         async function fetchData() {
             const id = await AsyncStorage.getItem('@usuario_id');
@@ -81,7 +84,7 @@ export default function Cliente() {
             return;
         }
 
-        
+
         const novaVenda = {
             cliente_id: clienteIdSelecionado,
             quantidadeVendas,
@@ -113,11 +116,11 @@ export default function Cliente() {
 
     async function deletarVenda(id) {
         try {
-            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}`)
+            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}?usuario_id=${usuarioId}`)
             setListaVendas(listaVendas.filter(item => item._id !== id))
             alert('Venda deletada com sucesso!')
         } catch (error) {
-            res.status(500)
+            console.error(500)
         }
     }
 
@@ -205,4 +208,3 @@ export default function Cliente() {
         </View>
     );
 }
-
