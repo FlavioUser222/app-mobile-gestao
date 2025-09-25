@@ -7,8 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker, { RNDateTimePicker } from '@react-native-community/datetimepicker';
 
 
-
-
 export default function Cliente() {
 
     const [modal, setModal] = useState(false)
@@ -106,14 +104,15 @@ export default function Cliente() {
 
     async function deletarCliente(id) {
         try {
-            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}`)
-            setClientes(clientes.filter(item => item._id !== id))
+            let res = await axios.delete(`https://app-mobile-gestao.onrender.com/cliente/${id}?usuario_id=${usuarioId}`)
+
+            console.log('✅ Cliente cadastrado com sucesso:', res.data)
+            setClientes(clientes.filter(item => item.id !== id))
             alert('Cliente deletado com sucesso!')
         } catch (error) {
-            res.status(500)
+            console.error(500)
         }
     }
-
 
     function onChangeDate(event, selectedDate) {
         setShowDatePicker(false)
@@ -138,9 +137,6 @@ export default function Cliente() {
         return `${dia} de ${mesExtenso} de ${ano}`;
     }
 
-
-
-
     return (
         <View style={styles.container}>
             <View style={styles.viewCadastro2}>
@@ -159,6 +155,7 @@ export default function Cliente() {
                         const vendaInfo = vendasCliente.find(vc => vc.nome === item.nome);
 
                         return (
+
                             <TouchableOpacity onLongPress={() => { deletarCliente(item.id) }} style={styles.viewClientes}>
                                 <View style={styles.clientesCard}>
                                     <View style={styles.clienteData}>
@@ -172,6 +169,7 @@ export default function Cliente() {
                                     </View>
                                 </View>
                             </TouchableOpacity>
+
                         );
                     }}
                 />
@@ -217,4 +215,3 @@ export default function Cliente() {
         </View>
     );
 }
-
