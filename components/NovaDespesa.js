@@ -88,7 +88,7 @@ export default function Cliente() {
     async function deletarDespesa(id) {
         try {
             let res = await axios.delete(`https://app-mobile-gestao.onrender.com/despesa/${id}?usuario_id=${usuarioId}`)
-            setListaDespesa(listaDespesa.filter(item => item._id !== id))
+            setListaDespesa(listaDespesa.filter(item => item.id !== id))
             alert('Despesa deletada com sucesso!')
         } catch (error) {
             console.error(500)
