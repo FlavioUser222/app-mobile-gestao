@@ -94,7 +94,6 @@ export default function Cliente() {
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
             setListaVendas([...listaVendas, res.data])
-            setData('');
             setQuantidadeVendas('');
             setValor(0)
             setModal(false);
@@ -206,3 +205,4 @@ export default function Cliente() {
         </View>
     );
 }
+
