@@ -67,7 +67,6 @@ export default function Cliente() {
             setListaDespesa([...listaDespesa, res.data])
 
             setNome('');
-            setData('');
 
             setModal(false);
         } catch (err) {
@@ -185,3 +184,4 @@ export default function Cliente() {
         </View>
     );
 }
+
