@@ -31,7 +31,7 @@ app.post('/cliente', async (req, res) => {
     try {
         const result = await pool.query(
             'INSERT INTO clientes (nome, data,email,telefone,usuario_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [nome, data, email, telefone,usuario_id]
+            [nome, data, email, telefone, usuario_id]
         )
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -56,7 +56,7 @@ app.get('/clientes-vendas', async (req, res) => {
              WHERE c.usuario_id = $1
             GROUP BY c.id, c.nome, c.email, c.telefone
             ORDER BY c.nome
-        `,[usuario_id]);
+        `, [usuario_id]);
 
         res.status(200).json(result.rows);
     } catch (err) {
@@ -144,10 +144,12 @@ app.get('/despesas', async (req, res) => {
 
 app.delete('/venda/:id', async (req, res) => {
     const { id } = req.params
+    const{usuario_id} = req.query
+
     try {
         const result = await pool.query(
-            'DELETE FROM vendas WHERE id = $1 RETURNING *',
-            [id]
+            'DELETE FROM vendas WHERE id = $1  AND usuario_id = $2 RETURNING *',
+            [id,usuario_id]
         )
         if (result.rowCount === 0) {
             return res.status(404).json({ mensagem: 'Venda não encontrada' });
@@ -162,10 +164,12 @@ app.delete('/venda/:id', async (req, res) => {
 
 app.delete('/despesa/:id', async (req, res) => {
     const { id } = req.params
+    const{usuario_id} = req.query
+
     try {
         const result = await pool.query(
-            'DELETE FROM despesas WHERE id = $1 RETURNING *',
-            [id]
+            'DELETE FROM despesas WHERE id = $1 AND usuario_id = $2 RETURNING *',
+            [id,usuario_id]
         )
         if (result.rowCount === 0) {
             return res.status(404).json({ mensagem: 'Despesa não encontrada' });
@@ -180,10 +184,11 @@ app.delete('/despesa/:id', async (req, res) => {
 
 app.delete('/cliente/:id', async (req, res) => {
     const { id } = req.params
+    const {usuario_id} = req.query
     try {
         const result = await pool.query(
-            'DELETE FROM cliente WHERE id = $1 RETURNING *',
-            [id]
+            'DELETE FROM cliente WHERE id = $1 AND usuario_id = $2 RETURNING *',
+            [id,usuario_id]
         )
         if (result.rowCount === 0) {
             return res.status(404).json({ mensagem: 'Cliente não encontrado' });
@@ -241,7 +246,7 @@ app.get('/lucro', async (req, res) => {
             SELECT 
                COALESCE((SELECT SUM(valor) FROM vendas WHERE usuario_id = $1), 0) -
                COALESCE((SELECT SUM(valor) FROM despesas WHERE usuario_id = $1), 0) AS lucro
-        `,[usuario_id]);
+        `, [usuario_id]);
 
         res.status(200).json({ lucro: result.rows[0].lucro });
 
