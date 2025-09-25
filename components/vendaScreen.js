@@ -117,7 +117,7 @@ export default function Cliente() {
     async function deletarVenda(id) {
         try {
             let res = await axios.delete(`https://app-mobile-gestao.onrender.com/venda/${id}?usuario_id=${usuarioId}`)
-            setListaVendas(listaVendas.filter(item => item._id !== id))
+            setListaVendas(listaVendas.filter(item => item.id !== id))
             alert('Venda deletada com sucesso!')
         } catch (error) {
             console.error(500)
