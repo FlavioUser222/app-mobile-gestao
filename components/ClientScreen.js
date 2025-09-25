@@ -94,7 +94,6 @@ export default function Cliente() {
 
 
             setNome('');
-            setData('');
             setEmail('');
             setTelefone('');
             setModal(false);
@@ -218,3 +217,4 @@ export default function Cliente() {
         </View>
     );
 }
+
