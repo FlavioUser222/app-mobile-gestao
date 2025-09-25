@@ -187,7 +187,7 @@ app.delete('/cliente/:id', async (req, res) => {
     const {usuario_id} = req.query
     try {
         const result = await pool.query(
-            'DELETE FROM cliente WHERE id = $1 AND usuario_id = $2 RETURNING *',
+            'DELETE FROM clientes WHERE id = $1 AND usuario_id = $2 RETURNING *',
             [id,usuario_id]
         )
         if (result.rowCount === 0) {
