@@ -82,12 +82,12 @@ app.get('/clientes', async (req, res) => {
 })
 
 app.post('/venda', async (req, res) => {
-    const { cliente_id, quantidadeVendas, data, valor, usuario_id } = req.body
+    const { cliente_id, quantidadeVendas, data, valor, usuario_id ,nome_produto} = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO vendas (cliente_id, quantidadeVendas, data,valor,usuario_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [cliente_id, quantidadeVendas, data, valor, usuario_id]
+            'INSERT INTO vendas (cliente_id, quantidadeVendas, data,valor,usuario_id,nome_produto) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [cliente_id, quantidadeVendas, data, valor, usuario_id,nome_produto]
         )
 
         res.status(201).json(result.rows[0]);
