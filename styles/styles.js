@@ -136,12 +136,12 @@ export const styles = StyleSheet.create({
         width: 140,
         borderRadius: 10,
         backgroundColor: '#3b6cf1ff',
-        flexDirection:'row',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
         textAlign: 'center',
-        gap:15,
+        gap: 15,
     },
     textCadastro: {
         color: '#fff',
@@ -227,20 +227,20 @@ export const styles = StyleSheet.create({
         fontWeight: 600,
         fontFamily: 'Arial',
     },
-    loginContainer:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
+    loginContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
-    loginCard:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
-        padding:30,
-        gap:10,
+    loginCard: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 30,
+        gap: 10,
     },
-      buttonCadastrar2: {
+    buttonCadastrar2: {
         width: 200,
         height: 40,
         backgroundColor: '#3b6cf1ff',
@@ -248,13 +248,43 @@ export const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-     input2: {
+    input2: {
         paddingHorizontal: 20,
         paddingVertical: 20,
         width: 300,
         height: 60,
         backgroundColor: '#d3d3d3ff'
     },
+
+    viewMovimentacaoVenda: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:'#3b6cf1ff',
+        padding:20,
+        marginTop:15,
+        width: 300,
+        height:50,
+        borderRadius:150,
+    },
+    viewMovimentacaoDespesa: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:'#638bf8b4',
+        padding:20,
+        marginTop:15,
+        width: 300,
+        height:50,
+        borderRadius:150,
+    },
+    
+    textTitle2: {
+        fontSize: 18,
+        fontWeight: 600,
+        fontFamily: 'Arial',
+        marginTop:50,
+
+    },
+
 
 
 
