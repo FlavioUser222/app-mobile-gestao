@@ -150,6 +150,7 @@ export default function Cliente() {
                         <View style={styles.vendasCard}>
                             <View style={styles.vendasData}>
                                 <Text style={styles.textData}>{formatarDataSemHora(item.data)}</Text>
+                                <Text style={styles.textData}>{item.nome_produto}</Text>
                                 <Image />
                             </View>
                             <View style={styles.opcoes}>
@@ -173,7 +174,7 @@ export default function Cliente() {
                             <Picker
                                 selectedValue={clienteIdSelecionado}
                                 onValueChange={(itemValue) => setClienteIdSelecionado(itemValue)}
-                                style={{ height: 50 }}
+                                style={{ height: 50,marginBottom:10,backgroundColor:'#d3d3d3ff',borderWidth:0,padding:10}}
                             >
                                 <Picker.Item label="Selecione um cliente" value={null} />
                                 {listaClientes.map(cliente => (
