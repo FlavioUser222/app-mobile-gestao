@@ -8,6 +8,10 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
+
+
 
 
 export default function Home({ navigation }) {
@@ -16,33 +20,33 @@ export default function Home({ navigation }) {
   const [lucro, setLucro] = useState(0);
 
 
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchDados() {
+        try {
+          const id = await AsyncStorage.getItem('@usuario_id');
+          console.log('usuario_id do AsyncStorage:', id);
+          if (!id) return;
 
-  useEffect(() => {
-    async function fetchDados() {
-      try {
-        const id = await AsyncStorage.getItem('@usuario_id');
-        console.log('usuario_id do AsyncStorage:', id);
-        if (!id) return;
+          const faturamentoRes = await axios.get(`https://app-mobile-gestao.onrender.com/faturamentoTotal?usuario_id=${id}`);
+          setFaturamentoTotal(faturamentoRes.data.faturamento);
 
-        const faturamentoRes = await axios.get(`https://app-mobile-gestao.onrender.com/faturamentoTotal?usuario_id=${id}`);
-        setFaturamentoTotal(faturamentoRes.data.faturamento);
-
-        const despesasRes = await axios.get(`https://app-mobile-gestao.onrender.com/despesas-totais?usuario_id=${id}`);
-        setDespesasTotais(despesasRes.data.despesas);
+          const despesasRes = await axios.get(`https://app-mobile-gestao.onrender.com/despesas-totais?usuario_id=${id}`);
+          setDespesasTotais(despesasRes.data.despesas);
 
 
-        const lucroRes = await axios.get(`https://app-mobile-gestao.onrender.com/lucro?usuario_id=${id}`);
-        setLucro(lucroRes.data.lucro);
+          const lucroRes = await axios.get(`https://app-mobile-gestao.onrender.com/lucro?usuario_id=${id}`);
+          setLucro(lucroRes.data.lucro);
 
-      } catch (error) {
-        console.error('Erro ao carregar dados:', error);
+        } catch (error) {
+          console.error('Erro ao carregar dados:', error);
+        }
       }
-    }
 
-    fetchDados();
-  }, []);
+      fetchDados();
+    }, [])
 
-
+  )
 
 
   function formatReal(value) {
