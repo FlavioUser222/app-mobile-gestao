@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { styles } from '../styles/styles';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -18,6 +18,8 @@ export default function Home({ navigation }) {
   const [faturamentoTotal, setFaturamentoTotal] = useState(0);
   const [despesasTotais, setDespesasTotais] = useState(0);
   const [lucro, setLucro] = useState(0);
+  const [movimentacoes, setMovimentacoes] = useState([])
+
 
 
   useFocusEffect(
@@ -38,6 +40,9 @@ export default function Home({ navigation }) {
           const lucroRes = await axios.get(`https://app-mobile-gestao.onrender.com/lucro?usuario_id=${id}`);
           setLucro(lucroRes.data.lucro);
 
+          const movimentacoesRes = await axios.get(`https://app-mobile-gestao.onrender.com/ultimas-movimentacoes?usuario_id=${id}`)
+          setMovimentacoes(movimentacoesRes.data)
+
         } catch (error) {
           console.error('Erro ao carregar dados:', error);
         }
@@ -54,7 +59,8 @@ export default function Home({ navigation }) {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+
+    <ScrollView>
       <View style={styles.container}>
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento total</Text>
@@ -87,7 +93,21 @@ export default function Home({ navigation }) {
             <Ionicons name={"receipt"} size={25} color={"white"} />
           </TouchableOpacity>
         </View>
+        <Text style={styles.textTitle2}>Últimas movimentacoes</Text>
+        {movimentacoes.map((item, index) => (
+          <View key={index} style={
+            item.tipo === 'venda'
+              ? styles.viewMovimentacaoVenda
+              : styles.viewMovimentacaoDespesa
+          }>
+            <Text style={{ fontWeight: 'bold' }}>
+              {item.tipo === 'venda' ? 'Venda' : 'Despesa'}: {item.descricao}
+            </Text>
+            <Text>{formatReal(item.valor)} - {new Date(item.data).toLocaleDateString()}</Text>
+          </View>
+        ))}
       </View>
-    </SafeAreaView>
+    </ScrollView>
+
   );
 }
