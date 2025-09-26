@@ -23,11 +23,13 @@ export default function Cliente() {
     const [usuarioId, setUsuarioId] = useState(null)
     const [data, setData] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const[isPressed,setIsPressed] = useState()
+    const [isPressed, setIsPressed] = useState()
+
+    const [nome_produto, setNome_produto] = useState('')
 
 
 
-    
+
     useEffect(() => {
         async function fetchData() {
             const id = await AsyncStorage.getItem('@usuario_id');
@@ -78,7 +80,8 @@ export default function Cliente() {
             !clienteIdSelecionado ||
             !quantidadeVendas || isNaN(Number(quantidadeVendas)) ||
             !valor || isNaN(Number(valor)) ||
-            !data || !(data instanceof Date)
+            !data || !(data instanceof Date) ||
+            !nome_produto || !isNaN(nome_produto)
         ) {
             alert("Preencha todos os campos corretamente.");
             return;
@@ -91,17 +94,18 @@ export default function Cliente() {
             data,
             valor,
             usuario_id: usuarioId,
+            nome_produto
         }
 
 
         try {
             let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
             setListaVendas([...listaVendas, res.data])
+            alert('Produto cadastrado com sucesso')
             setQuantidadeVendas('');
+            setNome_produto('')
             setValor(0)
             setModal(false);
-
-
         } catch (err) {
 
             alert('Erro ao cadastrar despesa')
@@ -178,6 +182,7 @@ export default function Cliente() {
                             </Picker>
 
                             <View style={styles.viewInput}>
+                                <TextInput style={styles.input} value={nome_produto} placeholder='Nome do produto' onChangeText={(text) => { setNome_produto(text) }} />
                                 <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
                                 <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                                 <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
@@ -194,7 +199,6 @@ export default function Cliente() {
                                     />
                                 )}
 
-                                {/* <TextInput style={styles.input} value={data} placeholder='Data(XXXX-XX-XX)' onChangeText={(text) => { setData(text) }} /> */}
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                     <Text style={styles.textButton}>Cadastrar</Text>
                                 </TouchableOpacity>
