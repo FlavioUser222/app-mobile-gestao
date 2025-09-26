@@ -82,12 +82,12 @@ app.get('/clientes', async (req, res) => {
 })
 
 app.post('/venda', async (req, res) => {
-    const { cliente_id, quantidadeVendas, data, valor, usuario_id ,nome_produto} = req.body
+    const { cliente_id, quantidadeVendas, data, valor, usuario_id, nome_produto } = req.body
 
     try {
         const result = await pool.query(
             'INSERT INTO vendas (cliente_id, quantidadeVendas, data,valor,usuario_id,nome_produto) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [cliente_id, quantidadeVendas, data, valor, usuario_id,nome_produto]
+            [cliente_id, quantidadeVendas, data, valor, usuario_id, nome_produto]
         )
 
         res.status(201).json(result.rows[0]);
@@ -144,12 +144,12 @@ app.get('/despesas', async (req, res) => {
 
 app.delete('/venda/:id', async (req, res) => {
     const { id } = req.params
-    const{usuario_id} = req.query
+    const { usuario_id } = req.query
 
     try {
         const result = await pool.query(
             'DELETE FROM vendas WHERE id = $1  AND usuario_id = $2 RETURNING *',
-            [id,usuario_id]
+            [id, usuario_id]
         )
         if (result.rowCount === 0) {
             return res.status(404).json({ mensagem: 'Venda não encontrada' });
@@ -164,12 +164,12 @@ app.delete('/venda/:id', async (req, res) => {
 
 app.delete('/despesa/:id', async (req, res) => {
     const { id } = req.params
-    const{usuario_id} = req.query
+    const { usuario_id } = req.query
 
     try {
         const result = await pool.query(
             'DELETE FROM despesas WHERE id = $1 AND usuario_id = $2 RETURNING *',
-            [id,usuario_id]
+            [id, usuario_id]
         )
         if (result.rowCount === 0) {
             return res.status(404).json({ mensagem: 'Despesa não encontrada' });
@@ -184,11 +184,11 @@ app.delete('/despesa/:id', async (req, res) => {
 
 app.delete('/cliente/:id', async (req, res) => {
     const { id } = req.params
-    const {usuario_id} = req.query
+    const { usuario_id } = req.query
     try {
         const result = await pool.query(
             'DELETE FROM clientes WHERE id = $1 AND usuario_id = $2 RETURNING *',
-            [id,usuario_id]
+            [id, usuario_id]
         )
         if (result.rowCount === 0) {
             return res.status(404).json({ mensagem: 'Cliente não encontrado' });
@@ -307,7 +307,44 @@ app.post('/login', async (req, res) => {
 
 
 
+app.get('/ultimas-movimentacoes', async (req, res) => {
+    const { usuario_id } = req.query
 
+
+    try {
+        const vendasRes = await pool.query('SELECT nome_produto AS descricao,valor,data FROM vendas WHERE usuario_id = $1 ORDER BY data DESC LIMIT 5', [usuario_id])
+
+        const vendas = vendasRes.rows.map(venda => ({
+            tipo: 'venda',
+            descricao: venda.descricao,
+            valor: venda.valor,
+            data: venda.data
+        }));
+
+        const despesasRes = await pool.query(`
+            SELECT nome AS descricao, valor, data
+            FROM despesas
+            WHERE usuario_id = $1
+            ORDER BY data DESC
+            LIMIT 5
+    `, [usuario_id]);
+
+        const despesas = despesasRes.rows.map(despesa => ({
+            tipo: 'despesa',
+            descricao: despesa.descricao,
+            valor: despesa.valor,
+            data: despesa.data
+        }));
+
+        const movimentacoes = [...vendas, ...despesas].sort((a, b) => new Date(b.data) - new Date(a.data));
+        res.status(200).json(movimentacoes)
+
+    } catch (error) {
+        console.error('Erro ao buscar movimentacoes', error)
+        res.status(500).json({ erro: 'Erro interno no servidor' });
+
+    }
+})
 
 
 
