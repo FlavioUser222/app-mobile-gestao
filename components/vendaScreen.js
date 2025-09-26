@@ -174,7 +174,7 @@ export default function Cliente() {
                             <Picker
                                 selectedValue={clienteIdSelecionado}
                                 onValueChange={(itemValue) => setClienteIdSelecionado(itemValue)}
-                                style={{ height: 50,marginBottom:10,backgroundColor:'#d3d3d3ff',borderWidth:0,padding:10}}
+                                style={{ height: 50, marginBottom: 10, backgroundColor: '#d3d3d3ff', borderWidth: 0, padding: 10 }}
                             >
                                 <Picker.Item label="Selecione um cliente" value={null} />
                                 {listaClientes.map(cliente => (
