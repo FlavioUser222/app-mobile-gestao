@@ -400,7 +400,7 @@ app.post('/venda-com-itens', async (req, res) => {
                 `INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario)
                  VALUES ($1, $2, $3, $4)`,
                 [venda_id, produto_id, quantidade, preco_unitario]
-            )
+            );
 
             await client.query(
                 `UPDATE produtos SET estoque = estoque - $1 WHERE id = $2`,
