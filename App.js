@@ -8,6 +8,7 @@ import Despesa from './components/NovaDespesa'
 import Venda from './components/vendaScreen'
 import CadastrarUsuario from './components/cadastroScreen';
 import loginScreen from './components/loginScreen';
+import Produtos from './components/produtosScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,12 @@ export default function App() {
           headerStyle: { backgroundColor: '#3b6cf1ff' },
           headerTintColor: 'white',
         }} />
+
+        <Stack.Screen name="Produtos" component={Produtos} options={{
+          headerStyle: { backgroundColor: '#3b6cf1ff' },
+          headerTintColor: 'white',
+        }} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
