@@ -259,22 +259,22 @@ export const styles = StyleSheet.create({
     viewMovimentacaoVenda: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'#638bf8ff',
-        padding:20,
-        marginTop:15,
-        width: 300,
-        height:100,
-        borderRadius:150,
-    },
-    viewMovimentacaoDespesa: {
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor:'#3b6cf181',
         padding:20,
         marginTop:15,
         width: 300,
         height:100,
-        borderRadius:150,
+        borderRadius:150
+    },
+    viewMovimentacaoDespesa: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor:'#638bf8ff',
+        padding:20,
+        marginTop:15,
+        width: 300,
+        height:100,
+        borderRadius:150
     },
     
     textTitle2: {
