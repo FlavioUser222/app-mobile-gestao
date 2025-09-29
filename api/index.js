@@ -352,7 +352,7 @@ app.post('/produto', async (req, res) => {
 
     try {
         const result = await pool.query(
-            `INSERT INTO produtos (nome, preco, estoque, usuario_id)
+            `INSERT INTO produtos/servicos (nome, preco, estoque, usuario_id)
              VALUES ($1, $2, $3, $4) RETURNING *`,
             [nome, preco, estoque, usuario_id]
         )
@@ -367,7 +367,7 @@ app.get('/produtos', async (req, res) => {
     const { usuario_id } = req.query;
     try {
         const result = await pool.query(
-            'SELECT * FROM produtos WHERE usuario_id = $1 ORDER BY nome',
+            'SELECT * FROM produtos/servicos WHERE usuario_id = $1 ORDER BY nome',
             [usuario_id]
         );
         res.status(200).json(result.rows);
@@ -375,14 +375,7 @@ app.get('/produtos', async (req, res) => {
         console.error(err);
         res.status(500).json({ erro: 'Erro ao buscar produtos' });
     }
-});
-
-
-
-
-
-
-
+})
 
 
 
