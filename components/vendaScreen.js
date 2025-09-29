@@ -158,7 +158,13 @@ export default function Cliente() {
                                 <Text>Vendas:{item.quantidadevendas}</Text>
                                 <Text style={styles.textNome}>Cliente:{buscarNomeClientePorId(item.cliente_id)}</Text>
                                 <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
-                                <Text style={styles.textStatus}>Status: {item.foipaga || 'Não informado'}</Text>
+                                <Text
+                                    style={[
+                                        styles.textVendas,
+                                        item.foipaga === 'Recebida' && { color: '#04ff26ff' },
+                                        item.foipaga === 'A pagar' && { color: '#ff0000af' },
+                                        item.foipaga === 'Parcialmente paga' && { color: '#ff7300ff' },
+                                    ]}>Status: {item.foipaga || 'Não informado'}</Text>
                             </View>
 
                         </View></TouchableOpacity>)} />
