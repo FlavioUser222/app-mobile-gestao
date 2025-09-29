@@ -366,7 +366,7 @@ app.get('/produtos', async (req, res) => {
     const { usuario_id } = req.query;
     try {
         const result = await pool.query(
-            'SELECT * FROM produtoservicos WHERE usuario_id = $1 ORDER BY nome',
+            'SELECT * FROM produtoservicos WHERE usuario_id = $1',
             [usuario_id]
         );
         res.status(200).json(result.rows);
@@ -401,7 +401,6 @@ app.post('/venda-com-itens', async (req, res) => {
                 [venda_id, produto_id, quantidade, preco_unitario]
             );
 
-            // Atualiza estoque na tabela produtoservicos (ajuste conforme seu nome real)
             await client.query(
                 `UPDATE produtoservicos SET estoque = estoque - $1 WHERE id = $2`,
                 [quantidade, produto_id]
