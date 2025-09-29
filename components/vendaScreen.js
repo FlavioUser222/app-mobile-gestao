@@ -30,6 +30,11 @@ export default function Cliente() {
     const [foipaga, setFoipaga] = useState('')
     const [listaDeOpcoes, setListaDeOpcoes] = useState(['Recebida', 'A pagar', 'Parcialmente paga'])
 
+    const [listaProdutos, setListaProdutos] = useState([]);
+    const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+    const [itensVenda, setItensVenda] = useState([])
+
+
 
     useEffect(() => {
         async function fetchData() {
@@ -43,6 +48,12 @@ export default function Cliente() {
 
                 let clientesRes = await axios.get(`https://app-mobile-gestao.onrender.com/clientes?usuario_id=${id}`);
                 setListaClientes(clientesRes.data);
+
+                let produtosRes = await axios.get(`https://app-mobile-gestao.onrender.com/produtos?usuario_id=${id}`);
+                setListaProdutos(produtosRes.data);
+
+
+
             } catch (error) {
                 console.error('Erro ao buscar vendas/clientes:', error);
             }
@@ -76,45 +87,41 @@ export default function Cliente() {
     }
 
     async function handleInputs() {
+        // if (
+        //     !clienteIdSelecionado ||
+        //     itensVenda.length === 0 ||
+        //     !data ||
+        //     !usuarioId ||
+        //     !foipaga
+        // ) {
+        //     alert("Preencha todos os campos corretamente.");
+        //     return;
+        // }
 
-        if (
-            !clienteIdSelecionado ||
-            !quantidadeVendas || isNaN(Number(quantidadeVendas)) ||
-            !valor || isNaN(Number(valor)) ||
-            !data || !(data instanceof Date) ||
-            !nome_produto || !isNaN(nome_produto)
-        ) {
-            alert("Preencha todos os campos corretamente.");
-            return;
-        }
+        const valor_total = itensVenda.reduce((sum, item) => sum + item.quantidade * item.preco_unitario, 0)
 
 
         const novaVenda = {
             cliente_id: clienteIdSelecionado,
-            quantidadeVendas,
-            data,
-            valor,
+            data: data.toISOString(),
+            valor_total,
             usuario_id: usuarioId,
-            nome_produto,
-            foipaga
-        }
-
+            foipaga,
+            itens: itensVenda
+        };
 
         try {
-            let res = await axios.post('https://app-mobile-gestao.onrender.com/venda', novaVenda)
-            setListaVendas([...listaVendas, res.data])
-            alert('Produto cadastrado com sucesso')
-            setQuantidadeVendas('');
-            setNome_produto('')
-            setValor(0)
+            const res = await axios.post('https://app-mobile-gestao.onrender.com/venda-com-itens', novaVenda)
+            alert('Venda registrada com sucesso');
             setModal(false);
+            setItensVenda([]);
+            setQuantidadeVendas('');
+            setProdutoSelecionado(null);
         } catch (err) {
-
-            alert('Erro ao cadastrar despesa')
+            console.error(err);
+            alert('Erro ao registrar venda com itens');
         }
-
     }
-
 
     function formatReal(value) {
         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
@@ -134,6 +141,36 @@ export default function Cliente() {
         const cliente = listaClientes.find(cliente => cliente.id === id);
         return cliente ? cliente.nome : 'Cliente não encontrado';
     }
+
+
+
+    function adicionarItem() {
+        if (!produtoSelecionado || !quantidadeVendas) {
+            alert('Selecione um produto e informe a quantidade');
+            return;
+        }
+
+        const produto = listaProdutos.find(p => String(p.id) === String(produtoSelecionado));
+        if (!produto) {
+            alert('Produto não encontrado');
+            return;
+        }
+
+        const novoItem = {
+            produto_id: produto.id,
+            quantidade: parseInt(quantidadeVendas),
+            preco_unitario: parseFloat(produto.preco), // Conversão segura
+        };
+
+
+        setItensVenda([...itensVenda, novoItem]);
+
+        setProdutoSelecionado(null);
+        setQuantidadeVendas('');
+        setValor('');
+    }
+
+
 
 
 
@@ -204,8 +241,31 @@ export default function Cliente() {
 
 
                             <View style={styles.viewInput}>
-                                <TextInput style={styles.input} value={nome_produto} placeholder='Nome do produto' onChangeText={(text) => { setNome_produto(text) }} />
-                                <TextInput style={styles.input} value={quantidadeVendas} placeholder='Quantidade vendida' onChangeText={(text) => { setQuantidadeVendas(text) }} />
+
+                                <Picker
+                                    selectedValue={produtoSelecionado}
+                                    onValueChange={(val) => setProdutoSelecionado(val)}
+                                    style={{ height: 50, marginBottom: 10, backgroundColor: '#d3d3d3ff', padding: 10 }}
+                                >
+                                    <Picker.Item label="Selecione um produto" value={null} />
+                                    {listaProdutos.map(prod => (
+                                        <Picker.Item
+                                            key={prod.id}
+                                            label={`${prod.nome} — R$ ${prod.preco}`}
+                                            value={prod.id}
+                                        />
+                                    ))}
+                                </Picker>
+
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Quantidade"
+                                    keyboardType="numeric"
+                                    value={quantidadeVendas?.toString()}
+                                    onChangeText={text => setQuantidadeVendas(text)}
+                                />
+
+
                                 <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
                                 <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
                                     <Text>
@@ -220,6 +280,25 @@ export default function Cliente() {
                                         onChange={onChangeDate}
                                     />
                                 )}
+                                <TouchableOpacity onPress={adicionarItem} style={{ marginBottom: 10, backgroundColor: '#ccc', padding: 10 }}>
+                                    <Text>Adicionar Item</Text>
+                                </TouchableOpacity>
+
+                                <FlatList
+                                    data={itensVenda}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item }) => {
+                                        const produto = listaProdutos.find(p => p.id === item.produto_id);
+                                        return (
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                <Text>{produto ? produto.nome : 'Produto não encontrado'}</Text>
+                                                <Text>Qtd: {item.quantidade}</Text>
+                                                <Text>R$ {item.preco_unitario.toFixed(2)}</Text>
+                                            </View>
+                                        );
+                                    }}
+                                />
+
 
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                     <Text style={styles.textButton}>Cadastrar</Text>

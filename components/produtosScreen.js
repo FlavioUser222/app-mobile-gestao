@@ -38,7 +38,7 @@ export default function Produtos() {
             Alert.alert("Erro", "O campo nome é obrigatório.");
             return;
         }
-
+        
         if (!valor || isNaN(Number(valor))) {
             Alert.alert("Erro", "Informe um valor numérico válido.");
             return;
@@ -50,7 +50,7 @@ export default function Produtos() {
 
         const novoProduto = {
             nome,
-            valor,
+            preco:valor,
             estoque,
             usuario_id: usuarioId
         }
@@ -59,8 +59,8 @@ export default function Produtos() {
             setListaProdutos([...listaDeProdutos, res.data])
 
             setNome('');
-            setValor('')
-            setEstoque('')
+            setValor()
+            setEstoque()
             setModal(false);
         } catch (err) {
             alert('Erro ao cadastrar produto')
@@ -90,7 +90,7 @@ export default function Produtos() {
                             </View>
                             <View style={styles.valorText}>
                                 <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
-                                <Text style={styles.textVendas}>Valor:{item.estoque}</Text>
+                                <Text style={styles.textVendas}>Estoque:{item.estoque}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>)} />
