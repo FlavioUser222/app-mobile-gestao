@@ -27,7 +27,8 @@ export default function Cliente() {
 
     const [nome_produto, setNome_produto] = useState('')
 
-
+    const [foipaga, setFoipaga] = useState('')
+    const [listaDeOpcoes, setListaDeOpcoes] = useState(['Recebida', 'A pagar', 'Parcialmente paga'])
 
 
     useEffect(() => {
@@ -94,7 +95,8 @@ export default function Cliente() {
             data,
             valor,
             usuario_id: usuarioId,
-            nome_produto
+            nome_produto,
+            foipaga
         }
 
 
@@ -151,12 +153,12 @@ export default function Cliente() {
                             <View style={styles.vendasData}>
                                 <Text style={styles.textData}>{formatarDataSemHora(item.data)}</Text>
                                 <Text style={styles.textData}>{item.nome_produto}</Text>
-                                <Image />
                             </View>
                             <View style={styles.opcoes}>
                                 <Text>Vendas:{item.quantidadevendas}</Text>
                                 <Text style={styles.textNome}>Cliente:{buscarNomeClientePorId(item.cliente_id)}</Text>
                                 <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
+                                <Text style={styles.textStatus}>Status: {item.foipaga || 'Não informado'}</Text>
                             </View>
 
                         </View></TouchableOpacity>)} />
@@ -181,6 +183,19 @@ export default function Cliente() {
                                     <Picker.Item key={cliente.id} label={cliente.nome} value={cliente.id} />
                                 ))}
                             </Picker>
+
+                            <Picker
+                                selectedValue={foipaga}
+                                onValueChange={(itemValue) => setFoipaga(itemValue)}
+                                style={{ height: 50, marginBottom: 10, backgroundColor: '#d3d3d3ff', borderWidth: 0, padding: 10 }}
+                            >
+                                <Picker.Item label="Selecione o status do pagamento" value={null} />
+                                {listaDeOpcoes.map((opcao, index) => (
+                                    <Picker.Item key={index} label={opcao} value={opcao} />
+                                ))}
+                            </Picker>
+
+
 
                             <View style={styles.viewInput}>
                                 <TextInput style={styles.input} value={nome_produto} placeholder='Nome do produto' onChangeText={(text) => { setNome_produto(text) }} />
