@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: '#638bf8b4',
         paddingHorizontal: 20,
-        height: 100,
+        height: 300,
         marginTop: 20,
         borderRadius: 20,
     },
@@ -81,9 +81,9 @@ export const styles = StyleSheet.create({
         gap: 20,
     },
     vendasCard: {
-        flex: 1,
-        alignItems: 'center',
-        padding: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: 170,
     },
     containerClientes: {
         flex: 1,
@@ -164,12 +164,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 30,
     },
-    vendasCard: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: 300,
-        height: 120,
-    },
+
     despesasCard: {
         flexDirection: 'row',
         width: 270,
@@ -259,29 +254,29 @@ export const styles = StyleSheet.create({
     viewMovimentacaoVenda: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'#3bf17281',
-        padding:20,
-        marginTop:15,
+        backgroundColor: '#3bf17281',
+        padding: 20,
+        marginTop: 15,
         width: 300,
-        height:100,
-        borderRadius:150
+        height: 100,
+        borderRadius: 150
     },
     viewMovimentacaoDespesa: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'#f86363ff',
-        padding:20,
-        marginTop:15,
+        backgroundColor: '#f86363ff',
+        padding: 20,
+        marginTop: 15,
         width: 300,
-        height:100,
-        borderRadius:150
+        height: 100,
+        borderRadius: 150
     },
-    
+
     textTitle2: {
         fontSize: 18,
         fontWeight: 600,
         fontFamily: 'Arial',
-        marginTop:50,
+        marginTop: 50,
 
     },
 
