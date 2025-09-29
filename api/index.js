@@ -82,14 +82,13 @@ app.get('/clientes', async (req, res) => {
 })
 
 app.post('/venda', async (req, res) => {
-    const { cliente_id, quantidadeVendas, data, valor, usuario_id, nome_produto, foipaga } = req.body
+    const { cliente_id, data, usuario_id, foipaga,valor } = req.body
 
     try {
         const result = await pool.query(
-            'INSERT INTO vendas (cliente_id, quantidadeVendas, data,valor,usuario_id,nome_produto,foipaga) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *',
-            [cliente_id, quantidadeVendas, data, valor, usuario_id, nome_produto, foipaga]
+            'INSERT INTO vendas (cliente_id, data,usuario_id,foipaga,valor) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [cliente_id, data, usuario_id, foipaga,valor]
         )
-
         res.status(201).json(result.rows[0]);
     } catch (err) {
         console.error(err);
@@ -385,7 +384,6 @@ app.post('/venda-com-itens', async (req, res) => {
     try {
         await client.query('BEGIN');
 
-        // Inserir venda sem items na tabela vendas
         const vendaResult = await client.query(
             `INSERT INTO vendas (cliente_id, data, valor, usuario_id, foipaga) 
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
