@@ -347,6 +347,44 @@ app.get('/ultimas-movimentacoes', async (req, res) => {
 })
 
 
+app.post('/produto', async (req, res) => {
+    const { nome, preco, estoque, usuario_id } = req.body;
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO produtos (nome, preco, estoque, usuario_id)
+             VALUES ($1, $2, $3, $4) RETURNING *`,
+            [nome, preco, estoque, usuario_id]
+        )
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ erro: 'Erro ao cadastrar produto' });
+    }
+})
+
+app.get('/produtos', async (req, res) => {
+    const { usuario_id } = req.query;
+    try {
+        const result = await pool.query(
+            'SELECT * FROM produtos WHERE usuario_id = $1 ORDER BY nome',
+            [usuario_id]
+        );
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ erro: 'Erro ao buscar produtos' });
+    }
+});
+
+
+
+
+
+
+
+
+
 
 app.listen(port, () => {
     console.log('App rodando na porta 3000')
