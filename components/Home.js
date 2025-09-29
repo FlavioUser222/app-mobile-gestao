@@ -84,12 +84,12 @@ export default function Home({ navigation }) {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('Venda')} style={styles.opcoesCadasto}>
-            <Text style={styles.textCadastro}>Cadastro de vendas</Text>
+            <Text style={styles.textCadastro}>Lançamento de vendas</Text>
             <FontAwesome5 name={"money-bill"} size={25} color={"white"} />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('Despesa')} style={styles.opcoesCadasto}>
-            <Text style={styles.textCadastro}>Cadastro de despesas</Text>
+            <Text style={styles.textCadastro}>Lançamento de despesas</Text>
             <Ionicons name={"receipt"} size={25} color={"white"} />
           </TouchableOpacity>
         </View>
