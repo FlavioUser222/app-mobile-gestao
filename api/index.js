@@ -385,6 +385,7 @@ app.post('/venda-com-itens', async (req, res) => {
     try {
         await client.query('BEGIN');
 
+        // Inserir venda sem items na tabela vendas
         const vendaResult = await client.query(
             `INSERT INTO vendas (cliente_id, data, valor, usuario_id, foipaga) 
              VALUES ($1, $2, $3, $4, $5) RETURNING *`,
@@ -402,8 +403,9 @@ app.post('/venda-com-itens', async (req, res) => {
                 [venda_id, produto_id, quantidade, preco_unitario]
             );
 
+            // Atualiza estoque na tabela produtoservicos (ajuste conforme seu nome real)
             await client.query(
-                `UPDATE produtos SET estoque = estoque - $1 WHERE id = $2`,
+                `UPDATE produtoservicos SET estoque = estoque - $1 WHERE id = $2`,
                 [quantidade, produto_id]
             );
         }
@@ -413,7 +415,7 @@ app.post('/venda-com-itens', async (req, res) => {
 
     } catch (err) {
         await client.query('ROLLBACK');
-        console.error(err);
+        console.error('Erro na rota /venda-com-itens:', err);
         res.status(500).json({ erro: 'Erro ao registrar venda com itens' });
     } finally {
         client.release();
