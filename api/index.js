@@ -377,6 +377,52 @@ app.get('/produtos', async (req, res) => {
     }
 })
 
+app.post('/venda-com-itens', async (req, res) => {
+    const { cliente_id, data, valor_total, usuario_id, foipaga, itens } = req.body;
+
+    const client = await pool.connect();
+
+    try {
+        await client.query('BEGIN');
+
+        const vendaResult = await client.query(
+            `INSERT INTO vendas (cliente_id, data, valor, usuario_id, foipaga) 
+             VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+            [cliente_id, data, valor_total, usuario_id, foipaga]
+        );
+
+        const venda_id = vendaResult.rows[0].id;
+
+        for (const item of itens) {
+            const { produto_id, quantidade, preco_unitario } = item;
+
+            await client.query(
+                `INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario)
+                 VALUES ($1, $2, $3, $4)`,
+                [venda_id, produto_id, quantidade, preco_unitario]
+            )
+
+            await client.query(
+                `UPDATE produtos SET estoque = estoque - $1 WHERE id = $2`,
+                [quantidade, produto_id]
+            );
+        }
+
+        await client.query('COMMIT');
+        res.status(201).json({ mensagem: 'Venda registrada com sucesso', venda_id });
+
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error(err);
+        res.status(500).json({ erro: 'Erro ao registrar venda com itens' });
+    } finally {
+        client.release();
+    }
+});
+
+
+
+
 
 
 app.listen(port, () => {
