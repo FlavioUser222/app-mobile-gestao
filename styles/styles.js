@@ -259,7 +259,7 @@ export const styles = StyleSheet.create({
     viewMovimentacaoVenda: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'#3b6cf181',
+        backgroundColor:'#3bf17281',
         padding:20,
         marginTop:15,
         width: 300,
@@ -269,7 +269,7 @@ export const styles = StyleSheet.create({
     viewMovimentacaoDespesa: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'#638bf8ff',
+        backgroundColor:'#f86363ff',
         padding:20,
         marginTop:15,
         width: 300,
