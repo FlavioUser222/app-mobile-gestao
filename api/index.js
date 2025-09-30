@@ -205,13 +205,12 @@ app.delete('/cliente/:id', async (req, res) => {
 app.get('/faturamentoTotal', async (req, res) => {
     const { usuario_id } = req.query
 
-
     try {
         const result = await pool.query(`
             SELECT 
                 COALESCE(SUM(valor), 0) AS faturamento_total 
             FROM vendas 
-            WHERE usuario_id = $1
+            WHERE usuario_id = $1 AND foipaga IN ('Recebida', 'Parcialmente paga')
 `, [usuario_id])
 
         res.status(200).json({ faturamento: result.rows[0].faturamento_total });
