@@ -245,10 +245,9 @@ app.get('/lucro', async (req, res) => {
 
     try {
         const result = await pool.query(`
-           SELECT 
-         COALESCE((SELECT SUM(valor) FROM vendas WHERE usuario_id = $1 AND foipaga IN ('Recebida', 'Parcialmente paga')), 0) -
-         COALESCE((SELECT SUM(valor) FROM despesas WHERE usuario_id = $1), 0) AS lucro
-
+            SELECT 
+               COALESCE((SELECT SUM(valor) FROM vendas WHERE usuario_id = $1), 0) -
+               COALESCE((SELECT SUM(valor) FROM despesas WHERE usuario_id = $1), 0) AS lucro
         `, [usuario_id]);
 
         res.status(200).json({ lucro: result.rows[0].lucro });
