@@ -45,18 +45,20 @@ app.get('/clientes-vendas', async (req, res) => {
 
     try {
         const result = await pool.query(`
-            SELECT 
-                c.id,
-                c.nome,
-                c.email,
-                c.telefone,
-                COALESCE(SUM(v.quantidade), 0) AS totalVendas
-            FROM clientes c
-            LEFT JOIN itens_venda v ON v.cliente_id = c.id
-            WHERE c.usuario_id = $1
-            GROUP BY c.id, c.nome, c.email, c.telefone
-            ORDER BY c.nome
-        `, [usuario_id])
+    SELECT 
+        c.id,
+        c.nome,
+        c.email,
+        c.telefone,
+        COALESCE(SUM(iv.quantidade), 0) AS totalVendas
+    FROM clientes c
+    LEFT JOIN vendas v ON v.cliente_id = c.id
+    LEFT JOIN itens_venda iv ON iv.venda_id = v.id
+    WHERE c.usuario_id = $1
+    GROUP BY c.id, c.nome, c.email, c.telefone
+    ORDER BY c.nome
+`, [usuario_id]);
+
 
         res.status(200).json(result.rows);
     } catch (err) {
