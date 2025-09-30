@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
 
 
@@ -85,7 +85,7 @@ export default function Home({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Produtos')} style={styles.opcoesCadasto}>
             <Text style={styles.textCadastro} >Cadastro de Produtos</Text>
-            <AntDesign name={"product"} size={25} color={"white"} />
+            <FontAwesome6 name={"boxes-stacked"} size={25} color={"white"} />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate('Venda')} style={styles.opcoesCadasto}>

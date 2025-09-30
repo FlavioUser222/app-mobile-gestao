@@ -89,7 +89,7 @@ export default function Produtos() {
                                 <Text style={styles.textNome}>{item.nome}</Text>
                             </View>
                             <View style={styles.valorText}>
-                                <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
+                                <Text style={styles.textVendas}>Valor:{formatReal(item.preco)}</Text>
                                 <Text style={styles.textVendas}>Estoque:{item.estoque}</Text>
                             </View>
                         </View>

@@ -43,7 +43,7 @@ export default function Cliente() {
 
             if (!id) return;
             try {
-                let vendasRes = await axios.get(`https://app-mobile-gestao.onrender.com/vendas?usuario_id=${id}`);
+                let vendasRes = await axios.get(`https://app-mobile-gestao.onrender.com/vendas-detalhadas?usuario_id=${id}`);
                 setListaVendas(vendasRes.data);
 
                 let clientesRes = await axios.get(`https://app-mobile-gestao.onrender.com/clientes?usuario_id=${id}`);
@@ -86,20 +86,35 @@ export default function Cliente() {
         }
     }
 
+
+
     async function handleInputs() {
-        // if (
-        //     !clienteIdSelecionado ||
-        //     itensVenda.length === 0 ||
-        //     !data ||
-        //     !usuarioId ||
-        //     !foipaga
-        // ) {
-        //     alert("Preencha todos os campos corretamente.");
-        //     return;
-        // }
+        if (!clienteIdSelecionado || !produtoSelecionado || !quantidadeVendas || !foipaga) {
+            alert("Preencha todos os campos corretamente.");
+            return;
+        }
 
-        const valor_total = itensVenda.reduce((sum, item) => sum + item.quantidade * item.preco_unitario, 0)
+        const produto = listaProdutos.find(p => String(p.id) === String(produtoSelecionado));
+        if (!produto) {
+            alert('Produto não encontrado');
+            return;
+        }
 
+
+        const quantidadeInt = parseInt(quantidadeVendas);
+
+        if (quantidadeInt > produto.estoque) {
+            alert(`Estoque insuficiente. Estoque atual: ${produto.estoque}`);
+            return;
+        }
+
+        const novoItem = {
+            produto_id: produto.id,
+            quantidade: quantidadeInt,
+            preco_unitario: parseFloat(produto.preco)
+        };
+
+        const valor_total = novoItem.quantidade * novoItem.preco_unitario;
 
         const novaVenda = {
             cliente_id: clienteIdSelecionado,
@@ -107,21 +122,29 @@ export default function Cliente() {
             valor_total,
             usuario_id: usuarioId,
             foipaga,
-            itens: itensVenda
+            itens: [novoItem]
         };
 
         try {
-            const res = await axios.post('https://app-mobile-gestao.onrender.com/venda-com-itens', novaVenda)
+            await axios.post('https://app-mobile-gestao.onrender.com/venda-com-itens', novaVenda);
             alert('Venda registrada com sucesso');
-            setModal(false);
+
+            const vendasAtualizadas = await axios.get(`https://app-mobile-gestao.onrender.com/vendas-detalhadas?usuario_id=${usuarioId}`);
+            setListaVendas(vendasAtualizadas.data);
+
+            setModal(false)
             setItensVenda([]);
             setQuantidadeVendas('');
             setProdutoSelecionado(null);
+            setValor('');
         } catch (err) {
             console.error(err);
             alert('Erro ao registrar venda com itens');
         }
+
     }
+
+
 
     function formatReal(value) {
         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
@@ -144,36 +167,6 @@ export default function Cliente() {
 
 
 
-    function adicionarItem() {
-        if (!produtoSelecionado || !quantidadeVendas) {
-            alert('Selecione um produto e informe a quantidade');
-            return;
-        }
-
-        const produto = listaProdutos.find(p => String(p.id) === String(produtoSelecionado));
-        if (!produto) {
-            alert('Produto não encontrado');
-            return;
-        }
-
-        const novoItem = {
-            produto_id: produto.id,
-            quantidade: parseInt(quantidadeVendas),
-            preco_unitario: parseFloat(produto.preco), // Conversão segura
-        };
-
-
-        setItensVenda([...itensVenda, novoItem]);
-
-        setProdutoSelecionado(null);
-        setQuantidadeVendas('');
-        setValor('');
-    }
-
-
-
-
-
     return (
         <View style={styles.containerVendas}>
             <View style={styles.viewCadastro2}>
@@ -189,12 +182,27 @@ export default function Cliente() {
                         <View style={styles.vendasCard}>
                             <View style={styles.vendasData}>
                                 <Text style={styles.textData}>{formatarDataSemHora(item.data)}</Text>
-                                <Text style={styles.textData}>{item.nome_produto}</Text>
                             </View>
                             <View style={styles.opcoes}>
-                                <Text>Vendas:{item.quantidadevendas}</Text>
                                 <Text style={styles.textNome}>Cliente:{buscarNomeClientePorId(item.cliente_id)}</Text>
-                                <Text style={styles.textVendas}>Valor:{formatReal(item.valor)}</Text>
+
+                                {item.itens && item.itens.length > 0 && (
+                                    <View>
+                                        {item.itens.map((itemVenda, index) => {
+                                            const produto = listaProdutos.find(p => p.id === itemVenda.produto_id)
+                                            return (
+                                                <View key={index}>
+                                                    <Text>{produto ? produto.nome : 'Produto'}</Text>
+                                                    <Text>Qtd: {itemVenda.quantidade}</Text>
+                                                    <Text>{formatReal(itemVenda.preco_unitario)}</Text>
+                                                </View>
+                                            )
+                                        })}
+                                    </View>
+                                )}
+
+
+
                                 <Text
                                     style={[
                                         styles.textVendas,
@@ -203,6 +211,7 @@ export default function Cliente() {
                                         item.foipaga === 'Parcialmente paga' && { color: '#ff7300ff' },
                                     ]}>Status: {item.foipaga || 'Não informado'}</Text>
                             </View>
+
 
                         </View></TouchableOpacity>)} />
 
@@ -238,25 +247,23 @@ export default function Cliente() {
                                 ))}
                             </Picker>
 
+                            <Picker
+                                selectedValue={produtoSelecionado}
+                                onValueChange={(val) => setProdutoSelecionado(val)}
+                                style={{ height: 50, marginBottom: 10, backgroundColor: '#d3d3d3ff', padding: 10 }}
+                            >
+                                <Picker.Item label="Selecione um produto" value={null} />
+                                {listaProdutos.map(prod => (
+                                    <Picker.Item
+                                        key={prod.id}
+                                        label={`${prod.nome} — R$ ${prod.preco}`}
+                                        value={prod.id}
+                                    />
+                                ))}
+                            </Picker>
 
 
                             <View style={styles.viewInput}>
-
-                                <Picker
-                                    selectedValue={produtoSelecionado}
-                                    onValueChange={(val) => setProdutoSelecionado(val)}
-                                    style={{ height: 50, marginBottom: 10, backgroundColor: '#d3d3d3ff', padding: 10 }}
-                                >
-                                    <Picker.Item label="Selecione um produto" value={null} />
-                                    {listaProdutos.map(prod => (
-                                        <Picker.Item
-                                            key={prod.id}
-                                            label={`${prod.nome} — R$ ${prod.preco}`}
-                                            value={prod.id}
-                                        />
-                                    ))}
-                                </Picker>
-
                                 <TextInput
                                     style={styles.input}
                                     placeholder="Quantidade"
@@ -280,24 +287,9 @@ export default function Cliente() {
                                         onChange={onChangeDate}
                                     />
                                 )}
-                                <TouchableOpacity onPress={adicionarItem} style={{ marginBottom: 10, backgroundColor: '#ccc', padding: 10 }}>
+                                {/* <TouchableOpacity onPress={adicionarItem} style={{ marginBottom: 10, backgroundColor: '#ccc', padding: 10 }}>
                                     <Text>Adicionar Item</Text>
-                                </TouchableOpacity>
-
-                                <FlatList
-                                    data={itensVenda}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item }) => {
-                                        const produto = listaProdutos.find(p => p.id === item.produto_id);
-                                        return (
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                <Text>{produto ? produto.nome : 'Produto não encontrado'}</Text>
-                                                <Text>Qtd: {item.quantidade}</Text>
-                                                <Text>R$ {item.preco_unitario.toFixed(2)}</Text>
-                                            </View>
-                                        );
-                                    }}
-                                />
+                                </TouchableOpacity> */}
 
 
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
