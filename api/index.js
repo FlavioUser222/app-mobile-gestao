@@ -421,6 +421,35 @@ app.post('/venda-com-itens', async (req, res) => {
 });
 
 
+app.get('/vendas-detalhadas', async (req, res) => {
+    const { usuario_id } = req.query;
+
+    try {
+        const vendasResult = await pool.query(
+            `SELECT * FROM vendas WHERE usuario_id = $1 ORDER BY data DESC`,
+            [usuario_id]
+        );
+
+        const vendas = vendasResult.rows;
+
+        for (let venda of vendas) {
+            const itensResult = await pool.query(
+                `SELECT iv.*, p.nome as nome_produto
+                 FROM itens_venda iv
+                 JOIN produtoservicos p ON iv.produto_id = p.id
+                 WHERE iv.venda_id = $1`,
+                [venda.id]
+            );
+
+            venda.itens = itensResult.rows;
+        }
+
+        res.status(200).json(vendas);
+    } catch (err) {
+        console.error('Erro em /vendas-detalhadas:', err);
+        res.status(500).json({ erro: 'Erro ao buscar vendas detalhadas' });
+    }
+});
 
 
 
