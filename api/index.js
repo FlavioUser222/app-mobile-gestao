@@ -82,12 +82,12 @@ app.get('/clientes', async (req, res) => {
 })
 
 app.post('/venda', async (req, res) => {
-    const { cliente_id, data, usuario_id, foipaga,valor } = req.body
+    const { cliente_id, data, usuario_id, foipaga, valor } = req.body
 
     try {
         const result = await pool.query(
             'INSERT INTO vendas (cliente_id, data,usuario_id,foipaga,valor) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [cliente_id, data, usuario_id, foipaga,valor]
+            [cliente_id, data, usuario_id, foipaga, valor]
         )
         res.status(201).json(result.rows[0]);
     } catch (err) {
@@ -311,11 +311,12 @@ app.get('/ultimas-movimentacoes', async (req, res) => {
 
 
     try {
-        const vendasRes = await pool.query('SELECT nome_produto AS descricao,valor,data FROM vendas WHERE usuario_id = $1 ORDER BY data DESC LIMIT 5', [usuario_id])
+        const vendasRes = await pool.query('SELECT valor,data,foipaga FROM vendas WHERE usuario_id = $1 ORDER BY data DESC LIMIT 5', [usuario_id])
+
 
         const vendas = vendasRes.rows.map(venda => ({
             tipo: 'venda',
-            descricao: venda.descricao,
+            descricao: `Venda ${venda.foipaga ? 'paga' : 'não paga'}`,
             valor: venda.valor,
             data: venda.data
         }));
