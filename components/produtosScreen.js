@@ -81,7 +81,7 @@ export default function Produtos() {
             </View>
 
             <View style={styles.topoDatela}>
-                <Text style={styles.textTitle}>Produtos pendentes</Text>
+                <Text style={styles.textTitle}>Produtos cadastrados</Text>
                 <FlatList data={listaDeProdutos} renderItem={({ item }) => (
                     <TouchableOpacity style={styles.viewDespesas}>
                         <View style={styles.despesasCard}>

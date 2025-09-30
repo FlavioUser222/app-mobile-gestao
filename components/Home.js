@@ -14,14 +14,11 @@ import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
 
 
-
 export default function Home({ navigation }) {
   const [faturamentoTotal, setFaturamentoTotal] = useState(0);
   const [despesasTotais, setDespesasTotais] = useState(0);
   const [lucro, setLucro] = useState(0);
   const [movimentacoes, setMovimentacoes] = useState([])
-
-
 
   useFocusEffect(
     useCallback(() => {
@@ -63,6 +60,7 @@ export default function Home({ navigation }) {
 
     <ScrollView>
       <View style={styles.container}>
+
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento total</Text>
           <Text>{formatReal(faturamentoTotal)}</Text>

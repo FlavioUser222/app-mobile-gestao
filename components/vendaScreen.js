@@ -16,7 +16,6 @@ export default function Cliente() {
 
     const [listaVendas, setListaVendas] = useState([])
     let [quantidadeVendas, setQuantidadeVendas] = useState()
-    // let [data, setData] = useState()
     let [valor, setValor] = useState()
     const [clienteIdSelecionado, setClienteIdSelecionado] = useState(null);
     const [listaClientes, setListaClientes] = useState([])
@@ -136,7 +135,7 @@ export default function Cliente() {
             setItensVenda([]);
             setQuantidadeVendas('');
             setProdutoSelecionado(null);
-            setValor('');
+
         } catch (err) {
             console.error(err);
             alert('Erro ao registrar venda com itens');
@@ -273,7 +272,7 @@ export default function Cliente() {
                                 />
 
 
-                                <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} />
+                                {/* <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} /> */}
                                 <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
                                     <Text>
                                         {data ? data.toLocaleDateString('pt-BR') : 'Selecionar data'}
