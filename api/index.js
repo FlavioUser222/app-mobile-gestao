@@ -50,13 +50,13 @@ app.get('/clientes-vendas', async (req, res) => {
                 c.nome,
                 c.email,
                 c.telefone,
-                COALESCE(SUM(v.quantidadeVendas), 0) AS totalVendas
+                COALESCE(SUM(v.quantidade), 0) AS totalVendas
             FROM clientes c
-            LEFT JOIN vendas v ON v.cliente_id = c.id
-             WHERE c.usuario_id = $1
+            LEFT JOIN itens_venda v ON v.cliente_id = c.id
+            WHERE c.usuario_id = $1
             GROUP BY c.id, c.nome, c.email, c.telefone
             ORDER BY c.nome
-        `, [usuario_id]);
+        `, [usuario_id])
 
         res.status(200).json(result.rows);
     } catch (err) {
