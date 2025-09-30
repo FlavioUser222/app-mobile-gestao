@@ -68,7 +68,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: '#638bf8b4',
         borderRadius: 20,
-        marginTop:20
+        padding: 20,
+        marginTop: 20,
     },
     opcoes: {
         alignItems: 'center',
@@ -77,9 +78,10 @@ export const styles = StyleSheet.create({
     },
     vendasCard: {
         flexDirection: 'row',
-        justifyContent:'center',
-        height: 160,
-        padding:30,
+        justifyContent: 'center',
+        paddingVertical:20,
+
+
     },
     containerClientes: {
         flex: 1,
@@ -168,9 +170,9 @@ export const styles = StyleSheet.create({
 
     },
     vendasData: {
-        alignItems:'center',
-        height:30,
-        width:100,
+        alignItems: 'center',
+        marginBottom: 40,
+        flexWrap: 'wrap'
     },
     valorText: {
         alignItems: 'center',
