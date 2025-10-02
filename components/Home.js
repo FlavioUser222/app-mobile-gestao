@@ -62,7 +62,7 @@ export default function Home({ navigation }) {
       <View style={styles.container}>
 
         <View style={styles.faturamento}>
-          <Text style={{ fontWeight: 'bold' }}>Faturamento total</Text>
+          <Text style={{ fontWeight: 'bold' }}>Faturamento bruto</Text>
           <Text>{formatReal(faturamentoTotal)}</Text>
         </View>
 
@@ -99,9 +99,34 @@ export default function Home({ navigation }) {
         <Text style={styles.textTitle2}>Últimas movimentacoes</Text>
         {movimentacoes.map((item, index) => (
           <View key={index} style={
-            item.tipo === 'venda'
-              ? styles.viewMovimentacaoVenda
-              : styles.viewMovimentacaoDespesa
+            item.tipo === 'venda' ? [
+              item.descricao === 'Venda Recebida' && {
+                backgroundColor: '#3bf17281', alignItems: 'center',
+                justifyContent: 'center',
+                padding: 20,
+                marginTop: 15,
+                width: 300,
+                height: 100,
+                borderRadius: 150
+              },
+              item.descricao === 'Venda Não paga' && {
+                backgroundColor: '#f86363ff', alignItems: 'center',
+                justifyContent: 'center',
+                padding: 20,
+                marginTop: 15,
+                width: 300,
+                height: 100,
+                borderRadius: 150
+              },
+              item.descricao === 'Venda Parcialmente recebida' && {
+                backgroundColor: '#f0873280', alignItems: 'center',
+                justifyContent: 'center',
+                padding: 20,
+                marginTop: 15,
+                width: 300,
+                height: 100,
+                borderRadius: 150
+              },] : styles.viewMovimentacaoDespesa
           }>
             <Text style={{ fontWeight: 'bold' }}>
               {item.tipo === 'venda' ? 'Venda' : 'Despesa'}: {item.descricao}
