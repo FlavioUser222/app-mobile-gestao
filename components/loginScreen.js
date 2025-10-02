@@ -25,16 +25,17 @@ export default function loginScreen({ navigation }) {
 
                 navigation.navigate('Home')
             }
-
         } catch (error) {
-            alert("Erro ao realizar login")
+            console.error(500,'Erro ao realizar login')
+            alert("Erro ao realizar login,email ou senha incorretos")
+
         }
     }
 
     return (
         <View style={styles.loginContainer}>
             <View style={styles.loginCard}>
-                <Text>Entrar no sistema</Text>
+                <Text style={styles.textTitle}>Entrar no sistema</Text>
                 <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input2} placeholder='Email' />
                 <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2}  secureTextEntry={true}  placeholder='Senha' />
                 <TouchableOpacity onPress={() => { entrarNoSistema() }} style={styles.buttonCadastrar2}>

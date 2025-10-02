@@ -6,7 +6,7 @@ import { Picker } from '@react-native-picker/picker'
 import { Feather, Ionicons } from 'react-native-vector-icons'
 
 
-export default function CadastrarUsuario() {
+export default function CadastrarUsuario({ navigation }) {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
 
@@ -19,15 +19,17 @@ export default function CadastrarUsuario() {
         try {
             let res = await axios.post("https://app-mobile-gestao.onrender.com/cadastrarUser", newUser)
             alert('Usuario cadastrado', res.data)
+            navigate.navigation('Login')
         } catch (error) {
-            alert(500, "Erro ao cadastrar usuario")
+            console.error(500, "Erro ao cadastrar usuario")
+            alert("Erro ao cadastrar usúario/Usúario ja existente")
         }
     }
 
     return (
         <View style={styles.loginContainer}>
             <View style={styles.loginCard}>
-                <Text>Cadastrar no sistema</Text>
+                <Text style={styles.textTitle}>Cadastrar no sistema</Text>
                 <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input2} placeholder='Cadastrar email' />
                 <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2} secureTextEntry={true} placeholder='Cadastrar senha' />
                 <TouchableOpacity onPress={() => { postUsuario() }} style={styles.buttonCadastrar2}>
