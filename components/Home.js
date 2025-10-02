@@ -56,11 +56,12 @@ export default function Home({ navigation }) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   }
 
+
   return (
 
     <ScrollView>
-      <View style={styles.container}>
 
+      <View style={styles.container}>
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento bruto</Text>
           <Text>{formatReal(faturamentoTotal)}</Text>
