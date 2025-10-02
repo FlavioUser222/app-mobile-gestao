@@ -68,6 +68,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#638bf8b4',
         borderRadius: 20,
         marginTop: 20,
+        width:'100%',
+        padding:20,
     },
     opcoes: {
         alignItems: 'center',
@@ -167,6 +169,7 @@ export const styles = StyleSheet.create({
         height: 120,
 
     },
+
     vendasData: {
         padding:20,
         alignItems: 'center',
