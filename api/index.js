@@ -317,12 +317,24 @@ app.get('/ultimas-movimentacoes', async (req, res) => {
         const vendasRes = await pool.query('SELECT valor,data,foipaga FROM vendas WHERE usuario_id = $1 ORDER BY data DESC LIMIT 5', [usuario_id])
 
 
-        const vendas = vendasRes.rows.map(venda => ({
-            tipo: 'venda',
-            descricao: `Venda ${venda.foipaga ? 'Recebida' || 'Parcialmente paga' : 'A pagar'}`,
-            valor: venda.valor,
-            data: venda.data
-        }));
+        const vendas = vendasRes.rows.map(venda => {
+            let status
+
+            if (venda.foipaga === 'Recebida') {
+                status = 'Recebida'
+            } else if (venda.foipaga === 'Parcialmente paga') {
+                status = 'Parcialmente recebida';
+            } else if (venda.foipaga === 'A pagar') {
+                status = 'Não paga'
+            }
+
+            return {
+                tipo: 'venda',
+                descricao: `Venda ${status}`,
+                valor: venda.valor,
+                data: venda.data
+            }
+        });
 
         const despesasRes = await pool.query(`
             SELECT nome AS descricao, valor, data
