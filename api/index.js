@@ -319,7 +319,7 @@ app.get('/ultimas-movimentacoes', async (req, res) => {
 
         const vendas = vendasRes.rows.map(venda => ({
             tipo: 'venda',
-            descricao: `Venda ${venda.foipaga ? 'paga' : 'não paga'}`,
+            descricao: `Venda ${venda.foipaga ? 'Recebida' || 'Parcialmente paga' : 'A pagar'}`,
             valor: venda.valor,
             data: venda.data
         }));
