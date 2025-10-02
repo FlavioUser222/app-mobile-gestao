@@ -65,10 +65,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#3b6cf1ff',
     },
     viewVendas: {
-        justifyContent: 'space-between',
         backgroundColor: '#638bf8b4',
         borderRadius: 20,
-        padding: 20,
         marginTop: 20,
     },
     opcoes: {
@@ -170,8 +168,8 @@ export const styles = StyleSheet.create({
 
     },
     vendasData: {
+        padding:20,
         alignItems: 'center',
-        marginBottom: 40,
         flexWrap: 'wrap'
     },
     valorText: {
