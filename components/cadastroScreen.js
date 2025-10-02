@@ -18,7 +18,7 @@ export default function CadastrarUsuario() {
         }
         try {
             let res = await axios.post("https://app-mobile-gestao.onrender.com/cadastrarUser", newUser)
-            alert('Usuario cadastrado',res.data)
+            alert('Usuario cadastrado', res.data)
         } catch (error) {
             alert(500, "Erro ao cadastrar usuario")
         }
@@ -29,7 +29,7 @@ export default function CadastrarUsuario() {
             <View style={styles.loginCard}>
                 <Text>Cadastrar no sistema</Text>
                 <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input2} placeholder='Cadastrar email' />
-                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2} placeholder='Cadastrar senha' />
+                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2} secureTextEntry={true} placeholder='Cadastrar senha' />
                 <TouchableOpacity onPress={() => { postUsuario() }} style={styles.buttonCadastrar2}>
                     <Text style={styles.textButton}>Cadastrar</Text>
                 </TouchableOpacity>

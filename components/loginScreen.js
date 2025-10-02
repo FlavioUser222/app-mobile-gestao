@@ -36,7 +36,7 @@ export default function loginScreen({ navigation }) {
             <View style={styles.loginCard}>
                 <Text>Entrar no sistema</Text>
                 <TextInput value={email} onChangeText={(text) => { setEmail(text) }} style={styles.input2} placeholder='Email' />
-                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2} placeholder='senha' />
+                <TextInput value={senha} onChangeText={(text) => { setSenha(text) }} style={styles.input2}  secureTextEntry={true}  placeholder='Senha' />
                 <TouchableOpacity onPress={() => { entrarNoSistema() }} style={styles.buttonCadastrar2}>
                     <Text style={styles.textButton}>Entrar</Text>
                 </TouchableOpacity>
