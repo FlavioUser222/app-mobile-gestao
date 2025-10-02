@@ -13,21 +13,17 @@ import DateTimePicker, { RNDateTimePicker } from '@react-native-community/dateti
 export default function Cliente() {
 
     const [modal, setModal] = useState(false)
-
     const [listaVendas, setListaVendas] = useState([])
     let [quantidadeVendas, setQuantidadeVendas] = useState()
-    let [valor, setValor] = useState()
-    const [clienteIdSelecionado, setClienteIdSelecionado] = useState(null);
+    const [clienteIdSelecionado, setClienteIdSelecionado] = useState(null)
     const [listaClientes, setListaClientes] = useState([])
     const [usuarioId, setUsuarioId] = useState(null)
     const [data, setData] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false)
-    const [isPressed, setIsPressed] = useState()
-
-    const [nome_produto, setNome_produto] = useState('')
 
     const [foipaga, setFoipaga] = useState('')
     const [listaDeOpcoes, setListaDeOpcoes] = useState(['Recebida', 'A pagar', 'Parcialmente paga'])
+
 
     const [listaProdutos, setListaProdutos] = useState([]);
     const [produtoSelecionado, setProdutoSelecionado] = useState(null);
@@ -65,7 +61,7 @@ export default function Cliente() {
     function formatarDataSemHora(dataHora) {
         if (!dataHora) return '';
 
-        const data = dataHora.split('T')[0]; // "2025-09-23"
+        const data = dataHora.split('T')[0]
         const [ano, mes, dia] = data.split('-');
 
         const nomesMeses = [
@@ -73,7 +69,7 @@ export default function Cliente() {
             'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
         ];
 
-        const mesExtenso = nomesMeses[parseInt(mes, 10) - 1];
+        const mesExtenso = nomesMeses[parseInt(mes, 10) - 1]
 
         return `${dia} de ${mesExtenso} de ${ano}`;
     }
@@ -199,8 +195,6 @@ export default function Cliente() {
                                         })}
                                     </View>
                                 )}
-
-
 
                                 <Text
                                     style={[

@@ -67,7 +67,7 @@ export default function Home({ navigation }) {
         </View>
 
         <View style={styles.faturamento}>
-          <Text style={{ fontWeight: 'bold' }}>Faturamento líquido (após despesas)</Text>
+          <Text style={{ fontWeight: 'bold' }}>Faturamento líquido</Text>
           <Text>{formatReal(lucro)}</Text>
         </View>
 
