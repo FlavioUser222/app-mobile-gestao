@@ -467,6 +467,32 @@ app.get('/vendas-detalhadas', async (req, res) => {
 });
 
 
+app.put('/vendas-estoque/:id', async (req, res) => {
+    const { id } = req.params
+    const { usuario_id } = req.query
+    const { nome, valor, estoque } = req.body
+
+    try {
+        const result = await pool.query(`UPDATE produtoservicos SET nome = $1, preco = $2, estoque = $3 WHERE id = $4 AND usuario_id = $5 RETURNING *`
+            , [nome, valor, estoque, id, usuario_id])
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ erro: "Produto não encontrado ou não pertence ao usuário" })
+        }
+
+        res.status(200).json({ mensagem: "Produto atualizado com sucesso", produto: result.rows[0] })
+
+    } catch (error) {
+        console.error("Erro ao atualizar produto", error)
+        res.status(500).json({ erro: "erro ao atualizar produto" })
+    }
+
+
+
+})
+
+
+
 
 
 app.listen(port, () => {
