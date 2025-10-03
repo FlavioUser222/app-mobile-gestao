@@ -80,19 +80,18 @@ export default function Home({ navigation }) {
               <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
               <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
             </View>
-
             {(faturamentoTotal > 0 || despesasTotais > 0) ? (
               <PieChart
                 widthAndHeight={70}
                 series={[
-                  faturamentoTotal,
-                  despesasTotais,
+                  { value: faturamentoTotal, color: "#2196F3" },
+                  { value: despesasTotais, color: "#F44336" }
                 ]}
-                sliceColor={["#2196F3", "#F44336"]}
               />
             ) : (
-              <Text style={{ fontSize: 12, color: 'gray' }}>Sem dados para exibir</Text>
+              <Text style={{ fontSize: 12, color: 'black' }}>Sem dados para exibir</Text>
             )}
+
           </View>
 
 
