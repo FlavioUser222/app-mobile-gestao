@@ -8,12 +8,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Produtos() {
 
     const [modal, setModal] = useState(false)
+    const [modal2, setModal2] = useState(false)
+
+
     const [listaDeProdutos, setListaProdutos] = useState([])
     let [nome, setNome] = useState('')
     let [valor, setValor] = useState()
     let [estoque, setEstoque] = useState()
 
     const [usuarioId, setUsuarioId] = useState(null)
+    const [produtoIdEdicao, setProdutoIdEdicao] = useState(null)
+
 
     useEffect(() => {
         async function fetchData() {
@@ -38,7 +43,7 @@ export default function Produtos() {
             Alert.alert("Erro", "O campo nome é obrigatório.");
             return;
         }
-        
+
         if (!valor || isNaN(Number(valor))) {
             Alert.alert("Erro", "Informe um valor numérico válido.");
             return;
@@ -50,7 +55,7 @@ export default function Produtos() {
 
         const novoProduto = {
             nome,
-            preco:valor,
+            preco: valor,
             estoque,
             usuario_id: usuarioId
         }
@@ -72,6 +77,32 @@ export default function Produtos() {
         return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
     }
 
+    async function atualizarProduto(id) {
+
+
+        const produtoAtualizado = {
+            nome,
+            preco: valor,
+            estoque,
+            usuario_id: usuarioId
+        }
+
+        try {
+            let res = await axios.put(`https://app-mobile-gestao.onrender.com/produto/${id}`, produtoAtualizado)
+            alert("Produto atualizado com sucesso", res.data)
+
+            setListaProdutos(listaDeProdutos.map(item =>
+                item.id === id ? { ...item, ...res.data.produto } : item
+            ));
+            setModal2(false)
+
+        } catch (error) {
+            alert("Erro ao atualizar produto")
+        }
+    }
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.viewCadastro2}>
@@ -92,6 +123,14 @@ export default function Produtos() {
                                 <Text style={styles.textVendas}>Valor:{formatReal(item.preco)}</Text>
                                 <Text style={styles.textVendas}>Estoque:{item.estoque}</Text>
                             </View>
+
+                            <TouchableOpacity onPress={() => {
+                                setProdutoIdEdicao(item.id)
+                                setNome(item.nome)
+                                setValor(item.preco.toString())
+                                setEstoque(item.estoque.toString()); setModal2(true)
+
+                            }}><Text>Editar Produto</Text></TouchableOpacity>
                         </View>
                     </TouchableOpacity>)} />
 
@@ -112,6 +151,26 @@ export default function Produtos() {
                             <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                 <Text style={styles.textButton}>Cadastrar</Text>
                             </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal visible={modal2} animationType="slide" transparent={true}>
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContent}>
+                        <View>
+                            <TouchableOpacity onPress={() => { setModal2(false) }} style={styles.modalClose}><Text><Feather name='x' size={30} color={'Black'} /></Text></TouchableOpacity>
+                        </View>
+                        <View style={styles.viewInput}>
+                            <TextInput style={styles.input} value={nome} placeholder='Novo nome' onChangeText={(text) => { setNome(text) }} />
+                            <TextInput style={styles.input} value={valor} placeholder='Novo valor' onChangeText={(text) => { setValor(text) }} />
+                            <TextInput style={styles.input} value={estoque} placeholder='Nova Quantidade no Estoque' onChangeText={(text) => { setEstoque(text) }} />
+
+                            <TouchableOpacity onPress={() => { atualizarProduto(produtoIdEdicao) }} style={styles.buttonCadastrar}>
+                                <Text style={styles.textButton}>Atualizar produto</Text>
+                            </TouchableOpacity>
+
                         </View>
                     </View>
                 </View>

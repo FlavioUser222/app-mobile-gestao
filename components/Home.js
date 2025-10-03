@@ -14,6 +14,7 @@ import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
 
 
+
 export default function Home({ navigation }) {
   const [faturamentoTotal, setFaturamentoTotal] = useState(0);
   const [despesasTotais, setDespesasTotais] = useState(0);
@@ -50,6 +51,7 @@ export default function Home({ navigation }) {
     }, [])
 
   )
+
 
 
   function formatReal(value) {
