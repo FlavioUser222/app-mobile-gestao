@@ -160,6 +160,35 @@ export default function Cliente() {
         return cliente ? cliente.nome : 'Cliente não encontrado';
     }
 
+    async function alterarStatusDeVenda(id, statusAtual) {
+        try {
+            let proxStatus
+
+            if (statusAtual === 'A pagar') proxStatus = 'Recebida'
+            else if (statusAtual === 'Recebida') proxStatus = 'Parcialmente paga'
+            else proxStatus = 'A pagar'
+
+            let res = await axios.put(`https://app-mobile-gestao.onrender.com/vendas/${id}`,{
+                foipaga: proxStatus,
+                usuario_id: usuarioId
+            })
+
+            setListaVendas(prev =>
+                prev.map(venda => venda.id === id ? { ...venda, foipaga: proxStatus } : venda)
+            )
+            alert("Status atualizado para " + proxStatus)
+
+
+
+        } catch (error) {
+            console.error("Erro ao alterar status:", error)
+            alert("Erro ao atualizar status")
+        }
+
+
+    }
+
+
 
 
     return (
@@ -196,13 +225,17 @@ export default function Cliente() {
                                     </View>
                                 )}
 
-                                <Text
-                                    style={[
-                                        styles.textVendas,
-                                        item.foipaga === 'Recebida' && { color: '#04ff26ff' },
-                                        item.foipaga === 'A pagar' && { color: '#ff0000af' },
-                                        item.foipaga === 'Parcialmente paga' && { color: '#ff7300ff' },
-                                    ]}>Status: {item.foipaga || 'Não informado'}</Text>
+
+                                <TouchableOpacity onPress={() => { alterarStatusDeVenda(item.id, item.foipaga) }}>
+                                    <Text
+                                        style={[
+                                            styles.textVendas,
+                                            item.foipaga === 'Recebida' && { color: '#04ff26ff' },
+                                            item.foipaga === 'A pagar' && { color: '#ff0000af' },
+                                            item.foipaga === 'Parcialmente paga' && { color: '#ff7300ff' },
+                                        ]}>Status: {item.foipaga || 'Não informado'}</Text>
+                                </TouchableOpacity>
+
                             </View>
 
 
