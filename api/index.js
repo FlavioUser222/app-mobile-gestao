@@ -467,14 +467,13 @@ app.get('/vendas-detalhadas', async (req, res) => {
 });
 
 
-app.put('/vendas-estoque/:id', async (req, res) => {
+app.put('/produto/:id', async (req, res) => {
     const { id } = req.params
-    const { usuario_id } = req.query
-    const { nome, valor, estoque } = req.body
+    const { usuario_id,nome, preco, estoque } = req.body
 
     try {
         const result = await pool.query(`UPDATE produtoservicos SET nome = $1, preco = $2, estoque = $3 WHERE id = $4 AND usuario_id = $5 RETURNING *`
-        , [nome, valor, estoque, id, usuario_id])
+        , [nome, preco, estoque, id, usuario_id])
 
         if (result.rowCount === 0) {
             return res.status(404).json({ erro: "Produto não encontrado ou não pertence ao usuário" })
