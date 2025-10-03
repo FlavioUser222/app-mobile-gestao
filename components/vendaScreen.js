@@ -8,10 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker, { RNDateTimePicker } from '@react-native-community/datetimepicker';
 
 
-
-
 export default function Cliente() {
 
+    
     const [modal, setModal] = useState(false)
     const [listaVendas, setListaVendas] = useState([])
     let [quantidadeVendas, setQuantidadeVendas] = useState()
