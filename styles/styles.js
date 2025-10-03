@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 
 
 export const styles = StyleSheet.create({
+
+
     container: {
         flex: 1,
         alignItems: "center",
@@ -68,8 +70,8 @@ export const styles = StyleSheet.create({
         backgroundColor: '#638bf8b4',
         borderRadius: 20,
         marginTop: 20,
-        width:'100%',
-        padding:20,
+        width: '100%',
+        padding: 20,
     },
     opcoes: {
         alignItems: 'center',
@@ -79,7 +81,7 @@ export const styles = StyleSheet.create({
     vendasCard: {
         flexDirection: 'row',
         justifyContent: 'center',
-        paddingVertical:20,
+        paddingVertical: 20,
 
 
     },
@@ -171,7 +173,7 @@ export const styles = StyleSheet.create({
     },
 
     vendasData: {
-        padding:20,
+        padding: 20,
         alignItems: 'center',
         flexWrap: 'wrap'
     },
