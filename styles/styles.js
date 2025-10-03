@@ -8,6 +8,13 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
     },
+
+    grafico:{
+        flexDirection:'row',
+        alignItems:'center',
+        gap:20,
+    },
+
     faturamento: {
         marginTop: 10,
         height: 120,
