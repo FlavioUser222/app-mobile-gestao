@@ -75,13 +75,20 @@ export default function Home({ navigation }) {
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento bruto</Text>
           <Text>{formatReal(faturamentoTotal)}</Text>
-          <PieChart
-            widthAndHeight={70}
-            series={[
-              { value: faturamentoTotal || 1, color: "#2196F3" },
-              { value: despesasTotais || 1, color: "#F44336" },
-            ]}
-          />
+          <View style={styles.grafico}>
+            <View>
+              <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
+              <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
+            </View>
+            <PieChart
+              widthAndHeight={70}
+              series={[
+                { value: faturamentoTotal || 1, color: "#2196F3" },
+                { value: despesasTotais || 1, color: "#F44336" },
+              ]}
+            />
+
+          </View>
 
         </View>
 
@@ -155,7 +162,7 @@ export default function Home({ navigation }) {
           </View>
         ))}
       </View>
-    </ScrollView>
+    </ScrollView >
 
   );
 }
