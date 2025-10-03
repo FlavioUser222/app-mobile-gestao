@@ -5,6 +5,8 @@ import { styles } from '../styles/styles';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+
 export default function Produtos() {
 
     const [modal, setModal] = useState(false)
@@ -130,7 +132,7 @@ export default function Produtos() {
                                 setValor(item.preco.toString())
                                 setEstoque(item.estoque.toString()); setModal2(true)
 
-                            }}><Text>Editar Produto</Text></TouchableOpacity>
+                            }}><Text style={{color:"#e42f2fff",fontWeight:600}}>Editar Produto</Text></TouchableOpacity>
                         </View>
                     </TouchableOpacity>)} />
 
@@ -167,7 +169,7 @@ export default function Produtos() {
                             <TextInput style={styles.input} value={valor} placeholder='Novo valor' onChangeText={(text) => { setValor(text) }} />
                             <TextInput style={styles.input} value={estoque} placeholder='Nova Quantidade no Estoque' onChangeText={(text) => { setEstoque(text) }} />
 
-                            <TouchableOpacity onPress={() => { atualizarProduto(produtoIdEdicao) }} style={styles.buttonCadastrar}>
+                            <TouchableOpacity onPress={() => { atualizarProduto(produtoIdEdicao) }} style={styles.buttonCadastrar2}>
                                 <Text style={styles.textButton}>Atualizar produto</Text>
                             </TouchableOpacity>
 
