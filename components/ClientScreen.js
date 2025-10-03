@@ -14,7 +14,7 @@ export default function Cliente() {
     let [nome, setNome] = useState('')
     // let [data, setData] = useState('')
     let [email, setEmail] = useState('')
-    let [telefone, setTelefone] = useState()
+    let [telefone, setTelefone] = useState('')
     let [vendasCliente, setVendasClientes] = useState([])
     const [usuarioId, setUsuarioId] = useState(null);
 
@@ -69,8 +69,6 @@ export default function Cliente() {
             alert("Selecione uma data válida.");
             return;
         }
-
-
 
 
         const novoCliente = {
