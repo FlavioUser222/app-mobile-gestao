@@ -491,7 +491,7 @@ app.put('/vendas/:id', async (req, res) => {
     const { foipaga, usuario_id } = req.body
 
     try {
-        const result = await pool.query(`UPDATE vendas SET foipaga = $1 WHERE id = $4 AND usuario_id = $5 RETURNING *`
+        const result = await pool.query(`UPDATE vendas SET foipaga = $1 WHERE id = $2 AND usuario_id = $3 RETURNING *`
             , [foipaga, id, usuario_id])
 
         if (result.rowCount === 0) {
