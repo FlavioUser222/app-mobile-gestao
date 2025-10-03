@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useEffect } from 'react';
 
 import Home from './components/Home'
 import Cliente from './components/ClientScreen'
@@ -10,9 +11,19 @@ import CadastrarUsuario from './components/cadastroScreen';
 import loginScreen from './components/loginScreen';
 import Produtos from './components/produtosScreen';
 
+import GlobalFont from 'react-native-global-font';
+
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  useEffect(() => {
+    let fontName = 'InterTight-Regular';
+    GlobalFont.applyGlobal(fontName);
+  }, []);
+
+
   return (
     <NavigationContainer >
       <Stack.Navigator initialRouteName="Login">
@@ -45,7 +56,7 @@ export default function App() {
           headerStyle: { backgroundColor: '#3b6cf1ff' },
           headerTintColor: 'white',
         }} />
-        
+
       </Stack.Navigator>
     </NavigationContainer>
   );
