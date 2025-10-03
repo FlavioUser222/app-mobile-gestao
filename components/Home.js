@@ -12,6 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
+import PieChart from 'react-native-pie-chart';
 
 
 
@@ -58,6 +59,13 @@ export default function Home({ navigation }) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
   }
 
+  const chartData = [];
+
+  if (faturamentoTotal > 0) chartData.push({ value: faturamentoTotal, color: "#2196F3" });
+  if (despesasTotais > 0) chartData.push({ value: despesasTotais, color: "#F44336" });
+  if (lucro > 0) chartData.push({ value: lucro, color: "#4CAF50" });
+
+
 
   return (
 
@@ -67,7 +75,16 @@ export default function Home({ navigation }) {
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento bruto</Text>
           <Text>{formatReal(faturamentoTotal)}</Text>
+          <PieChart
+            widthAndHeight={70}
+            series={[
+              { value: faturamentoTotal || 1, color: "#2196F3" },
+              { value: despesasTotais || 1, color: "#F44336" },
+            ]}
+          />
+
         </View>
+
 
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento líquido</Text>
