@@ -76,7 +76,7 @@ export default function Home({ navigation }) {
           <Text>{formatReal(faturamentoTotal)}</Text>
           <View style={styles.grafico}>
             <View>
-              <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
+              <Text style={{ color: '#0074d3ff' }}>Faturamento Bruto</Text>
               <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
             </View>
             {(faturamentoTotal > 0 || despesasTotais > 0) ? (
@@ -104,8 +104,8 @@ export default function Home({ navigation }) {
           <Text>{formatReal(lucro)}</Text>
           <View style={styles.grafico}>
             <View>
-              <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
-              <Text style={{ color: '#5cf436ff' }}>Faturamento liquido</Text>
+              <Text style={{ color: '#0074d3ff' }}>Faturamento Bruto</Text>
+              <Text style={{ color: '#32fa00ff' }}>Faturamento liquido</Text>
             </View>
 
             {(faturamentoTotal > 0 || lucro > 0) ? (
@@ -131,7 +131,7 @@ export default function Home({ navigation }) {
           <Text>{formatReal(despesasTotais)}</Text>
           <View style={styles.grafico}>
             <View>
-              <Text style={{ color: '#5cf436ff' }}>Faturamento liquido</Text>
+              <Text style={{ color: '#32fa00ff' }}>Faturamento liquido</Text>
               <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
 
             </View>
