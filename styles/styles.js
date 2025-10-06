@@ -17,8 +17,8 @@ export const styles = StyleSheet.create({
 
     faturamento: {
         marginTop: 10,
-        height: 140,
-        width: 300,
+        height: 150,
+        width: 350,
         borderRadius: 100,
         backgroundColor: '#638bf8b4',
         alignItems: 'center',
