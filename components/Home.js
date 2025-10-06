@@ -77,7 +77,7 @@ export default function Home({ navigation }) {
           <View style={styles.grafico}>
             <View>
               <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
-              <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
+              <Text style={{ color: '#F44336' }}>Despesas totais</Text>
             </View>
             {(faturamentoTotal > 0 || despesasTotais > 0) ? (
               <PieChart
@@ -94,8 +94,6 @@ export default function Home({ navigation }) {
               </Text>
             )}
           </View>
-
-
 
 
         </View>
@@ -142,7 +140,7 @@ export default function Home({ navigation }) {
               <PieChart
                 widthAndHeight={75}
                 series={[
-                  ...(despesasTotais > 0 ? [{ value: despesasTotais, color: '#ff1f0fff' }] : []),
+                  ...(despesasTotais > 0 ? [{ value: despesasTotais, color: '#F44336' }] : []),
                   ...(lucro > 0 ? [{ value: lucro, color: '#5cf436ff' }] : []),
                 ]}
               />
