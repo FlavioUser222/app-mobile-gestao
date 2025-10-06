@@ -81,7 +81,7 @@ export default function Home({ navigation }) {
             </View>
             {(faturamentoTotal > 0 || despesasTotais > 0) ? (
               <PieChart
-                widthAndHeight={70}
+                widthAndHeight={75}
                 series={[
                   ...(faturamentoTotal > 0 ? [{ value: faturamentoTotal, color: '#2196F3' }] : []),
                   ...(despesasTotais > 0 ? [{ value: despesasTotais, color: '#F44336' }] : []),
@@ -104,11 +104,57 @@ export default function Home({ navigation }) {
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento líquido</Text>
           <Text>{formatReal(lucro)}</Text>
+          <View style={styles.grafico}>
+            <View>
+              <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
+              <Text style={{ color: '#5cf436ff' }}>Faturamento liquido</Text>
+            </View>
+
+            {(faturamentoTotal > 0 || lucro > 0) ? (
+              <PieChart
+                widthAndHeight={75}
+                series={[
+                  ...(faturamentoTotal > 0 ? [{ value: faturamentoTotal, color: '#2196F3' }] : []),
+                  ...(lucro > 0 ? [{ value: lucro, color: '#5cf436ff' }] : []),
+                ]}
+              />
+
+            ) : (
+              <Text style={{ fontSize: 12, color: 'black' }}>
+                Sem dados para exibir
+              </Text>
+            )}
+          </View>
+
         </View>
 
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Total de despesas</Text>
           <Text>{formatReal(despesasTotais)}</Text>
+          <View style={styles.grafico}>
+            <View>
+              <Text style={{ color: '#5cf436ff' }}>Faturamento liquido</Text>
+              <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
+
+            </View>
+
+            {(despesasTotais > 0 || lucro > 0) ? (
+              <PieChart
+                widthAndHeight={75}
+                series={[
+                  ...(despesasTotais > 0 ? [{ value: despesasTotais, color: '#ff1f0fff' }] : []),
+                  ...(lucro > 0 ? [{ value: lucro, color: '#5cf436ff' }] : []),
+                ]}
+              />
+
+            ) : (
+              <Text style={{ fontSize: 12, color: 'black' }}>
+                Sem dados para exibir
+              </Text>
+            )}
+          </View>
+
+
         </View>
 
         <View style={styles.viewCadastro}>
@@ -132,6 +178,9 @@ export default function Home({ navigation }) {
           </TouchableOpacity>
         </View>
         <Text style={styles.textTitle2}>Últimas movimentacoes</Text>
+
+
+
         {movimentacoes.map((item, index) => (
           <View key={index} style={
             item.tipo === 'venda' ? [
@@ -163,6 +212,7 @@ export default function Home({ navigation }) {
                 borderRadius: 150
               },] : styles.viewMovimentacaoDespesa
           }>
+
             <Text style={{ fontWeight: 'bold' }}>
               {item.tipo === 'venda' ? 'Venda' : 'Despesa'}: {item.descricao}
             </Text>
