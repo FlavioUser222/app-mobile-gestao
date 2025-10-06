@@ -10,7 +10,7 @@ import DateTimePicker, { RNDateTimePicker } from '@react-native-community/dateti
 
 export default function Cliente() {
 
-    
+
     const [modal, setModal] = useState(false)
     const [listaVendas, setListaVendas] = useState([])
     let [quantidadeVendas, setQuantidadeVendas] = useState()
@@ -167,7 +167,7 @@ export default function Cliente() {
             else if (statusAtual === 'Recebida') proxStatus = 'Parcialmente paga'
             else proxStatus = 'A pagar'
 
-            let res = await axios.put(`https://app-mobile-gestao.onrender.com/vendas/${id}`,{
+            let res = await axios.put(`https://app-mobile-gestao.onrender.com/vendas/${id}`, {
                 foipaga: proxStatus,
                 usuario_id: usuarioId
             })
@@ -297,8 +297,6 @@ export default function Cliente() {
                                     onChangeText={text => setQuantidadeVendas(text)}
                                 />
 
-
-                                {/* <TextInput style={styles.input} value={valor} placeholder='Valor' onChangeText={(text) => { setValor(text) }} /> */}
                                 <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.input}>
                                     <Text>
                                         {data ? data.toLocaleDateString('pt-BR') : 'Selecionar data'}
@@ -312,11 +310,7 @@ export default function Cliente() {
                                         onChange={onChangeDate}
                                     />
                                 )}
-                                {/* <TouchableOpacity onPress={adicionarItem} style={{ marginBottom: 10, backgroundColor: '#ccc', padding: 10 }}>
-                                    <Text>Adicionar Item</Text>
-                                </TouchableOpacity> */}
-
-
+                    
                                 <TouchableOpacity onPress={() => { handleInputs() }} style={styles.buttonCadastrar}>
                                     <Text style={styles.textButton}>Cadastrar</Text>
                                 </TouchableOpacity>

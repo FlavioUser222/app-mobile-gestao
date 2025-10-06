@@ -12,7 +12,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
-import PieChart from 'react-native-pie-chart';
 
 
 
@@ -75,26 +74,6 @@ export default function Home({ navigation }) {
         <View style={styles.faturamento}>
           <Text style={{ fontWeight: 'bold' }}>Faturamento bruto</Text>
           <Text>{formatReal(faturamentoTotal)}</Text>
-          <View style={styles.grafico}>
-            <View>
-              <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
-              <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
-            </View>
-            {(faturamentoTotal > 0 || despesasTotais > 0) ? (
-              <PieChart
-                widthAndHeight={70}
-                series={[
-                  { value: faturamentoTotal, color: "#2196F3" },
-                  { value: despesasTotais, color: "#F44336" }
-                ]}
-              />
-            ) : (
-              <Text style={{ fontSize: 12, color: 'black' }}>Sem dados para exibir</Text>
-            )}
-
-          </View>
-
-
         </View>
 
 
