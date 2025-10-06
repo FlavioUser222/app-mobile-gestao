@@ -18,11 +18,10 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  useEffect(() => {
-    let fontName = 'InterTight-Regular';
-    GlobalFont.applyGlobal(fontName);
-  }, []);
-
+  // useEffect(() => {
+  //   let fontName = 'InterTight-Regular';
+  //   GlobalFont.applyGlobal(fontName);
+  // }, []);
 
   return (
     <NavigationContainer >
@@ -61,7 +60,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-
-});
