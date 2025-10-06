@@ -77,7 +77,7 @@ export default function Home({ navigation }) {
           <View style={styles.grafico}>
             <View>
               <Text style={{ color: '#008cffff' }}>Faturamento Bruto</Text>
-              <Text style={{ color: '#F44336' }}>Despesas totais</Text>
+              <Text style={{ color: '#ff1f0fff' }}>Despesas totais</Text>
             </View>
             {(faturamentoTotal > 0 || despesasTotais > 0) ? (
               <PieChart
