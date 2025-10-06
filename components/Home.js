@@ -72,8 +72,8 @@ export default function Home({ navigation }) {
 
       <View style={styles.container}>
         <View style={styles.faturamento}>
-          <Text style={{ fontWeight: 'bold' }}>Faturamento bruto</Text>
-          <Text>{formatReal(faturamentoTotal)}</Text>
+          <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>Faturamento bruto</Text>
+          <Text  style={{fontSize:18,fontWeight:500}}>{formatReal(faturamentoTotal)}</Text>
           <View style={styles.grafico}>
             <View>
               <Text style={{ color: '#0074d3ff' }}>Faturamento Bruto</Text>
@@ -100,8 +100,8 @@ export default function Home({ navigation }) {
 
 
         <View style={styles.faturamento}>
-          <Text style={{ fontWeight: 'bold' }}>Faturamento líquido</Text>
-          <Text>{formatReal(lucro)}</Text>
+          <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>Faturamento líquido</Text>
+          <Text  style={{fontSize:18,fontWeight:500}}>{formatReal(lucro)}</Text>
           <View style={styles.grafico}>
             <View>
               <Text style={{ color: '#0074d3ff' }}>Faturamento Bruto</Text>
@@ -127,8 +127,8 @@ export default function Home({ navigation }) {
         </View>
 
         <View style={styles.faturamento}>
-          <Text style={{ fontWeight: 'bold' }}>Total de despesas</Text>
-          <Text>{formatReal(despesasTotais)}</Text>
+          <Text style={{ fontWeight: 'bold', paddingBottom: 10 }}>Total de despesas</Text>
+          <Text style={{fontSize:18,fontWeight:500}}>{formatReal(despesasTotais)}</Text>
           <View style={styles.grafico}>
             <View>
               <Text style={{ color: '#32fa00ff' }}>Faturamento liquido</Text>
