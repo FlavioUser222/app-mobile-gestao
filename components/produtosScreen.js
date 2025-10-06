@@ -165,8 +165,11 @@ export default function Produtos() {
                             <TouchableOpacity onPress={() => { setModal2(false) }} style={styles.modalClose}><Text><Feather name='x' size={30} color={'Black'} /></Text></TouchableOpacity>
                         </View>
                         <View style={styles.viewInput}>
+                            <Text>Novo nome</Text>
                             <TextInput style={styles.input} value={nome} placeholder='Novo nome' onChangeText={(text) => { setNome(text) }} />
+                            <Text>Novo valor</Text>
                             <TextInput style={styles.input} value={valor} placeholder='Novo valor' onChangeText={(text) => { setValor(text) }} />
+                            <Text>Nova quantidade no estoque</Text>
                             <TextInput style={styles.input} value={estoque} placeholder='Nova Quantidade no Estoque' onChangeText={(text) => { setEstoque(text) }} />
 
                             <TouchableOpacity onPress={() => { atualizarProduto(produtoIdEdicao) }} style={styles.buttonCadastrar2}>
