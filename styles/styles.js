@@ -12,12 +12,12 @@ export const styles = StyleSheet.create({
     grafico:{
         flexDirection:'row',
         alignItems:'center',
-        gap:20,
+        gap:30,
     },
 
     faturamento: {
         marginTop: 10,
-        height: 120,
+        height: 140,
         width: 300,
         borderRadius: 100,
         backgroundColor: '#638bf8b4',
